@@ -54,7 +54,7 @@ const FEATURES = [
     icon: Download,
     title: "Copy .env or download ZIP",
     description:
-      "The Generate step copies the full .env snippet, or POST /api/generate returns a zip of the template plus that .env when EXPO_TEMPLATE_PATH, EXPO_TEMPLATE_ARCHIVE_URL, or a dev sibling folder is configured.",
+      "The Generate step copies the full .env snippet, or POST /api/generate returns a zip of the template plus that .env when EXPO_TEMPLATE_PATH, EXPO_TEMPLATE_ARCHIVE_URL (optionally EXPO_TEMPLATE_SUBPATH for a monorepo), or a dev sibling folder is configured.",
   },
 ];
 

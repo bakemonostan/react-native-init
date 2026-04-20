@@ -104,7 +104,7 @@ async function resolveTemplateSource(): Promise<TemplateSource> {
   }
 
   throw new Error(
-    "ZIP_TEMPLATE_SOURCE: Set EXPO_TEMPLATE_PATH to your Expo template folder (must contain package.json with expo), or EXPO_TEMPLATE_ARCHIVE_URL to a .zip or a GitHub repo URL (https://github.com/owner/repo or .../.git — converted to archive zip; branch via EXPO_TEMPLATE_GIT_REF, default main). In development, a sibling ../../my-react-native-expo-template from this app is tried automatically.",
+    "ZIP_TEMPLATE_SOURCE: Set EXPO_TEMPLATE_PATH to your Expo template folder (must contain package.json with expo), or EXPO_TEMPLATE_ARCHIVE_URL to a .zip or a GitHub repo URL (https://github.com/owner/repo or .../.git — converted to archive zip; branch via EXPO_TEMPLATE_GIT_REF, default main). If the template lives in a subfolder of that repo (monorepo), set EXPO_TEMPLATE_SUBPATH (e.g. my-react-native-expo-template). In development, a sibling ../../my-react-native-expo-template from this app is tried automatically.",
   );
 }
 
@@ -133,6 +133,42 @@ async function zipFromFilesystem(root: string): Promise<JSZip> {
   const zip = new JSZip();
   await addDirectory(zip, root, "");
   return zip;
+}
+
+function normalizedTemplateSubpath(): string | null {
+  const raw = process.env.EXPO_TEMPLATE_SUBPATH?.trim();
+  if (!raw) return null;
+  const s = raw.replace(/^\/+|\/+$/g, "").replace(/\\/g, "/");
+  return s.length > 0 ? s : null;
+}
+
+/**
+ * When the downloaded archive is a monorepo, keep only files under `subpath/`
+ * and re-root the zip so `package.json` is at the top level.
+ */
+async function restrictZipToSubfolder(
+  inner: JSZip,
+  subpath: string,
+): Promise<JSZip> {
+  const prefix = `${subpath}/`;
+  const out = new JSZip();
+  const keys = Object.keys(inner.files).filter(
+    (k) => !inner.files[k].dir && k.startsWith(prefix),
+  );
+  for (const key of keys) {
+    const node = inner.files[key];
+    if (!node) continue;
+    const stripped = key.slice(prefix.length);
+    if (!stripped || stripped.endsWith("/")) continue;
+    const content = await node.async("nodebuffer");
+    out.file(stripped, content);
+  }
+  if (Object.keys(out.files).length === 0) {
+    throw new Error(
+      `ZIP_ARCHIVE_SUBPATH_EMPTY: No files under "${prefix}" in the archive. Fix EXPO_TEMPLATE_SUBPATH (monorepo folder containing the Expo app).`,
+    );
+  }
+  return out;
 }
 
 /**
@@ -166,6 +202,10 @@ async function zipFromRemoteArchive(url: string): Promise<JSZip> {
     if (!stripped || stripped.endsWith("/")) continue;
     const content = await node.async("nodebuffer");
     inner.file(stripped, content);
+  }
+  const sub = normalizedTemplateSubpath();
+  if (sub) {
+    return restrictZipToSubfolder(inner, sub);
   }
   return inner;
 }

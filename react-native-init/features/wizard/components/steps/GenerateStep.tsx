@@ -115,7 +115,8 @@ export function GenerateStep({ config, onEditStep }: Props) {
           <code className="rounded bg-muted px-1 font-mono text-xs">RN_INIT_README.txt</code> — your toggles live in{" "}
           <code className="rounded bg-muted px-1 font-mono text-xs">.env</code>, not as removed files. The server needs the
           template on disk or via URL — see <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_PATH</code>{" "}
-          / <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_ARCHIVE_URL</code> in the Next app{" "}
+          / <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_ARCHIVE_URL</code>
+          {" "}(and <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_SUBPATH</code> if the Expo app is a folder inside a monorepo zip) in the Next app{" "}
           <code className="rounded bg-muted px-1 font-mono text-xs">.env.example</code>. In dev, a sibling{" "}
           <code className="rounded bg-muted px-1 font-mono text-xs">../../my-react-native-expo-template</code> is used
           automatically when present. <strong className="text-foreground">Copy .env</strong> still works without that.
