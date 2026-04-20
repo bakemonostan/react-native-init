@@ -17,6 +17,7 @@ import {
   ListExample,
   ModalExample,
   OTPInputExample,
+  PressableExample,
   ProgressBarExample,
   RadioButtonCardExample,
   SelectExample,
@@ -58,6 +59,20 @@ export default function ComponentsScreen() {
         headerTitle: "Components",
         headerLeft: () => <DrawerToggle />,
       }}>
+      <Drawer.Screen
+        name="Buttons"
+        component={PressableExample}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <IconComponent
+              name="hand-left-outline"
+              library="Ionicons"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Icons"
         component={IconExample}

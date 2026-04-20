@@ -93,10 +93,11 @@ export default function TextInputComponent({
   const resolvedColor = color ?? colors.text;
   const resolvedErrorColor = errorColor ?? colors.error;
 
+  const ringColor = (colors.ring as string | undefined) ?? colors.primary;
   const borderColor = error
     ? resolvedErrorColor
     : focused
-      ? colors.primary
+      ? ringColor
       : colors.border;
 
   const getFontSize = (sizeValue: FontSize): number => {
@@ -107,7 +108,7 @@ export default function TextInputComponent({
     fontFamily: getFontFamily(weight),
     fontSize: getFontSize(size),
     color: resolvedColor,
-    backgroundColor: colors.surface,
+    backgroundColor: (colors.input as string | undefined) ?? colors.surface,
     borderWidth: 1,
     borderColor,
     padding: 8,

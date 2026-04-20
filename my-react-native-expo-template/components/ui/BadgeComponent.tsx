@@ -1,3 +1,4 @@
+import { toneFgBg, type SemanticTone } from "@/constants/Colors";
 import { useTheme } from "@/hooks/useTheme";
 import React from "react";
 import { StyleSheet, View, ViewStyle } from "react-native";
@@ -5,13 +6,18 @@ import TextComponent from "./TextComponent";
 
 export interface BadgeComponentProps {
   /**
+   * Semantic tone (wizard-aligned). Ignored if **`backgroundColor`** is set.
+   * @default **`"destructive"`** (common for counts / alerts)
+   */
+  tone?: SemanticTone;
+
+  /**
    * Content to display in the badge
    */
   content?: string | number;
 
   /**
-   * Background color of the badge
-   * @default **`colors.error`**
+   * Background color of the badge — overrides **`tone`**
    */
   backgroundColor?: string;
 
@@ -107,6 +113,7 @@ export interface BadgeComponentProps {
  */
 export default function BadgeComponent({
   content,
+  tone = "destructive",
   backgroundColor,
   textColor,
   size = "medium",
@@ -114,8 +121,9 @@ export default function BadgeComponent({
   dot = false,
 }: BadgeComponentProps) {
   const { colors } = useTheme();
-  const bg = backgroundColor ?? colors.error;
-  const fg = textColor ?? colors.primaryText;
+  const pair = toneFgBg(colors, tone);
+  const bg = backgroundColor ?? pair.background;
+  const fg = textColor ?? pair.foreground;
 
   const getSize = () => {
     switch (size) {

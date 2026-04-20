@@ -25,9 +25,17 @@ export type PressableSize =
   | number;
 
 /**
- * Common pressable variants
+ * Pressable variants aligned with the RN Init wizard semantic groups
+ * (primary, secondary, muted, accent, destructive) plus ghost/outline.
  */
-export type PressableVariant = "primary" | "secondary" | "ghost" | "outline";
+export type PressableVariant =
+  | "primary"
+  | "secondary"
+  | "muted"
+  | "accent"
+  | "destructive"
+  | "ghost"
+  | "outline";
 
 /**
  * Props interface for the PressableComponent
@@ -232,7 +240,17 @@ export default function PressableComponent({
   const variantText = useMemo(
     (): Record<PressableVariant, { color: string }> => ({
       primary: { color: colors.primaryText },
-      secondary: { color: colors.primary },
+      secondary: {
+        color: colors.secondaryForeground ?? colors.text,
+      },
+      muted: { color: colors.mutedForeground ?? colors.textSecondary },
+      accent: {
+        color:
+          colors.accentForeground ?? colors.palette.primary900,
+      },
+      destructive: {
+        color: colors.destructiveForeground ?? colors.palette.white,
+      },
       outline: { color: colors.primary },
       ghost: { color: colors.primary },
     }),
@@ -240,8 +258,11 @@ export default function PressableComponent({
   );
 
   const variantSurface = useMemo((): Record<PressableVariant, ViewStyle> => {
+    const ringColor = (colors.ring as string | undefined) ?? colors.primary;
     const secondaryBg = colors.secondary ?? colors.backgroundSecondary;
-    const secondaryBorder = colors.border;
+    const mutedBg = colors.muted ?? colors.backgroundSecondary;
+    const accentBg = colors.accent ?? colors.palette.primary100;
+    const destructiveBg = colors.destructive ?? colors.error;
     return {
       primary: {
         backgroundColor: colors.primary,
@@ -250,7 +271,19 @@ export default function PressableComponent({
       secondary: {
         backgroundColor: secondaryBg,
         borderWidth: 1,
-        borderColor: secondaryBorder,
+        borderColor: colors.border,
+      },
+      muted: {
+        backgroundColor: mutedBg,
+        borderWidth: 0,
+      },
+      accent: {
+        backgroundColor: accentBg,
+        borderWidth: 0,
+      },
+      destructive: {
+        backgroundColor: destructiveBg,
+        borderWidth: 0,
       },
       ghost: {
         backgroundColor: "transparent",
@@ -259,7 +292,7 @@ export default function PressableComponent({
       outline: {
         backgroundColor: colors.surface,
         borderWidth: 1,
-        borderColor: colors.primary,
+        borderColor: ringColor,
       },
     };
   }, [colors]);
@@ -373,7 +406,13 @@ export default function PressableComponent({
             <View style={{ marginLeft: accessorySpacing }}>
               <ActivityIndicator
                 size="small"
-                color={colors.textDim}
+                color={
+                  variant === "primary" || variant === "destructive"
+                    ? variant === "destructive"
+                      ? colors.destructiveForeground
+                      : colors.primaryText
+                    : variantText[variant].color
+                }
               />
             </View>
           ) : (

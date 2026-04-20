@@ -164,6 +164,60 @@ export type AppColors = (typeof lightColors | typeof darkColors) &
   Partial<ThemeTokenSet>;
 
 /**
+ * Semantic roles aligned with the RN Init wizard (primary, secondary, muted, accent, destructive).
+ * Used by {@link toneFgBg}, buttons, badges, and chips.
+ */
+export type SemanticTone =
+  | "primary"
+  | "secondary"
+  | "muted"
+  | "accent"
+  | "destructive";
+
+/** Background + on-color text for a semantic tone (works with or without full wizard env). */
+export function toneFgBg(
+  colors: AppColors,
+  tone: SemanticTone,
+): { background: string; foreground: string } {
+  const secondaryBg = colors.secondary ?? colors.backgroundSecondary;
+  const secondaryFg = colors.secondaryForeground ?? colors.text;
+  const mutedBg = colors.muted ?? colors.backgroundSecondary;
+  const mutedFg = colors.mutedForeground ?? colors.textSecondary;
+  const accentBg = colors.accent ?? colors.palette.primary100;
+  const accentFg = colors.accentForeground ?? colors.palette.primary900;
+  const destructiveBg = colors.destructive ?? colors.error;
+  const destructiveFg = colors.destructiveForeground ?? colors.palette.white;
+
+  switch (tone) {
+    case "primary":
+      return {
+        background: colors.primary,
+        foreground: colors.primaryText,
+      };
+    case "secondary":
+      return {
+        background: secondaryBg,
+        foreground: secondaryFg,
+      };
+    case "muted":
+      return {
+        background: mutedBg,
+        foreground: mutedFg,
+      };
+    case "accent":
+      return {
+        background: accentBg,
+        foreground: accentFg,
+      };
+    case "destructive":
+      return {
+        background: destructiveBg,
+        foreground: destructiveFg,
+      };
+  }
+}
+
+/**
  * Applies wizard / tweakcn-style semantic tokens on top of the static light or dark base.
  */
 export function mergeSemanticTokens(

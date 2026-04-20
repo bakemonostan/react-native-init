@@ -39,6 +39,8 @@ export type {
   PressableVariant,
 } from "./PressableComponent";
 
+export type { SemanticTone } from "@/constants/Colors";
+
 export { Screen } from "./Screen";
 export type { ExtendedEdge, ScreenProps } from "./Screen";
 

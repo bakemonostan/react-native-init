@@ -21,6 +21,7 @@ export { default as ImageExample } from "./ImageExample";
 export { default as ListExample } from "./ListExample";
 export { default as ModalExample } from "./ModalExample";
 export { default as OTPInputExample } from "./OTPInputExample";
+export { default as PressableExample } from "./PressableExample";
 export { default as ProgressBarExample } from "./ProgressBarExample";
 export { default as RadioButtonCardExample } from "./RadioButtonCardExample";
 export { default as SelectExample } from "./SelectExample";

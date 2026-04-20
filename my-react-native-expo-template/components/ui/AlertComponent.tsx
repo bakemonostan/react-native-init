@@ -4,7 +4,13 @@ import { StyleSheet, View, ViewStyle } from "react-native";
 import IconComponent from "./IconComponent";
 import TextComponent from "./TextComponent";
 
-export type AlertVariant = "info" | "success" | "warning" | "error";
+export type AlertVariant =
+  | "info"
+  | "success"
+  | "warning"
+  | "error"
+  | "muted"
+  | "accent";
 
 export interface AlertComponentProps {
   /**
@@ -55,6 +61,8 @@ const VARIANT_CONFIG = {
   success: { icon: { name: "checkmark-circle", library: "Ionicons" } },
   warning: { icon: { name: "warning", library: "Ionicons" } },
   error: { icon: { name: "alert-circle", library: "Ionicons" } },
+  muted: { icon: { name: "ellipse-outline", library: "Ionicons" } },
+  accent: { icon: { name: "color-wand-outline", library: "Ionicons" } },
 } as const;
 
 /**
@@ -163,6 +171,16 @@ export default function AlertComponent({
       background: colors.errorBackground,
       text: colors.error,
       border: colors.error,
+    },
+    muted: {
+      background: colors.muted ?? colors.backgroundSecondary,
+      text: colors.mutedForeground ?? colors.textSecondary,
+      border: colors.border,
+    },
+    accent: {
+      background: colors.accent ?? colors.palette.primary100,
+      text: colors.accentForeground ?? colors.palette.primary900,
+      border: colors.accent ?? colors.palette.primary300,
     },
   };
 

@@ -11,7 +11,7 @@ export default function AlertExample() {
     <Screen safeAreaEdges={["bottom"]}>
       <View style={{ gap: 16 }}>
         <TextComponent size="lg" weight="bold">
-          Alert Component
+          Alerts
         </TextComponent>
 
         <AlertComponent
@@ -39,8 +39,20 @@ export default function AlertExample() {
         />
 
         <AlertComponent
+          variant="muted"
+          title="Muted"
+          message="Secondary context — maps to theme muted tokens."
+        />
+
+        <AlertComponent
+          variant="accent"
+          title="Accent"
+          message="Highlight or promotional copy using accent tokens."
+        />
+
+        <AlertComponent
           variant="info"
-          message="This is a simple alert without a title."
+          message="Custom colors still override variant defaults."
           backgroundColor={colors.palette.primary100}
           textColor={colors.palette.primary900}
           borderColor={colors.palette.primary300}

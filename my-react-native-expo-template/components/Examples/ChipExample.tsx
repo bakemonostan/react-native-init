@@ -1,9 +1,18 @@
 import { ChipComponent } from "@/components/ui";
+import type { SemanticTone } from "@/constants/Colors";
 import { Screen } from "@/components/ui/Screen";
 import TextComponent from "@/components/ui/TextComponent";
 import { useTheme } from "@/hooks/useTheme";
 import React, { useState } from "react";
 import { View } from "react-native";
+
+const TONES: SemanticTone[] = [
+  "primary",
+  "secondary",
+  "muted",
+  "accent",
+  "destructive",
+];
 
 export default function ChipExample() {
   const { colors } = useTheme();
@@ -19,7 +28,7 @@ export default function ChipExample() {
 
         <View style={{ gap: 8 }}>
           <TextComponent size="sm" color={colors.textSecondary}>
-            Variants (tap to select)
+            Shape variants (tone = primary)
           </TextComponent>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
             {(["soft", "outlined", "filled"] as const).map((v) => (
@@ -27,8 +36,26 @@ export default function ChipExample() {
                 key={v}
                 label={v}
                 variant={v}
+                tone="primary"
                 selected={selected === v}
                 onPress={() => setSelected(v)}
+              />
+            ))}
+          </View>
+        </View>
+
+        <View style={{ gap: 8 }}>
+          <TextComponent size="sm" color={colors.textSecondary}>
+            Tones (filled)
+          </TextComponent>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            {TONES.map((tone) => (
+              <ChipComponent
+                key={tone}
+                label={tone}
+                variant="filled"
+                tone={tone}
+                onPress={() => {}}
               />
             ))}
           </View>
@@ -47,6 +74,7 @@ export default function ChipExample() {
             <ChipComponent
               label="Starred"
               variant="outlined"
+              tone="accent"
               icon={{ name: "star", library: "Ionicons" }}
             />
           </View>
@@ -61,6 +89,7 @@ export default function ChipExample() {
               <ChipComponent
                 key={t}
                 label={t}
+                tone="secondary"
                 dismissible
                 onDismiss={() =>
                   setTags((prev) => prev.filter((x) => x !== t))

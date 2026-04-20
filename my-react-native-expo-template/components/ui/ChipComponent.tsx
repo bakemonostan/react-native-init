@@ -1,3 +1,4 @@
+import { type SemanticTone, toneFgBg } from "@/constants/Colors";
 import { useTheme } from "@/context/ThemeContext";
 import React from "react";
 import {
@@ -26,6 +27,12 @@ export interface ChipComponentProps {
    * @default "soft"
    */
   variant?: ChipVariant;
+
+  /**
+   * Semantic color role (wizard / tweakcn–aligned).
+   * @default "primary"
+   */
+  tone?: SemanticTone;
 
   /**
    * Whether the chip is in a selected/active state.
@@ -103,6 +110,7 @@ export interface ChipComponentProps {
 export default function ChipComponent({
   label,
   variant = "soft",
+  tone = "primary",
   selected = false,
   icon,
   dismissible = false,
@@ -112,30 +120,51 @@ export default function ChipComponent({
   style,
 }: ChipComponentProps) {
   const { colors } = useTheme();
+  const pair = toneFgBg(colors, tone);
 
   const getContainerStyle = (): ViewStyle => {
     if (selected) {
-      return { backgroundColor: colors.primary, borderColor: colors.primary };
+      return {
+        backgroundColor: pair.background,
+        borderColor: pair.background,
+      };
     }
     switch (variant) {
       case "filled":
-        return { backgroundColor: colors.primary, borderColor: colors.primary };
+        return {
+          backgroundColor: pair.background,
+          borderColor: pair.background,
+        };
       case "outlined":
-        return { backgroundColor: "transparent", borderColor: colors.border };
+        return {
+          backgroundColor: "transparent",
+          borderColor: pair.background,
+        };
       case "soft":
       default:
         return {
-          backgroundColor: colors.backgroundSecondary,
-          borderColor: colors.backgroundSecondary,
+          backgroundColor: colors.muted,
+          borderColor:
+            tone === "muted" ? colors.border : pair.background,
         };
     }
   };
 
   const labelColor =
-    selected || variant === "filled" ? colors.primaryText : colors.text;
+    selected || variant === "filled"
+      ? pair.foreground
+      : variant === "outlined"
+        ? pair.background
+        : tone === "muted"
+          ? colors.mutedForeground
+          : pair.background;
 
   const iconColor =
-    selected || variant === "filled" ? colors.primaryText : colors.textSecondary;
+    selected || variant === "filled"
+      ? pair.foreground
+      : variant === "outlined"
+        ? pair.background
+        : colors.textSecondary;
 
   return (
     <TouchableOpacity

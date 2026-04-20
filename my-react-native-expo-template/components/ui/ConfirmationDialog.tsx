@@ -155,13 +155,10 @@ export default function ConfirmationDialog({
               <PressableComponent
                 buttonText={confirmLabel}
                 onPress={onConfirm}
-                variant='primary'
+                variant={destructive ? "destructive" : "primary"}
                 size='base'
                 loading={loading}
-                style={[
-                  styles.confirmBtn,
-                  destructive && { backgroundColor: colors.error },
-                ]}
+                style={styles.confirmBtn}
               />
             </View>
           </View>
