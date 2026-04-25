@@ -1,56 +1,49 @@
-# RN Init (web wizard)
+# RN Init (Web Wizard)
 
-Next.js UI that walks through the same **conceptual choices** as **`my-react-native-expo-template`** and produces a **copy-paste `.env`** aligned with that repo’s `app.config.ts` / `.env.example`.
+`react-native-init` is a Next.js wizard that helps configure and generate projects based on `my-react-native-expo-template`.
 
-**Closed source** for now (no public distribution or license in this README).
+## What It Does
 
-- **Wizard:** [http://localhost:3000/create](http://localhost:3000/create) when you run `npm run dev`.
-- **How opt-in/out works today:** see [`docs/WIZARD_FLOW.md`](docs/WIZARD_FLOW.md).
-- **Expo template side:** `my-react-native-expo-template/docs/WIZARD_AND_TEMPLATE.md` — open that file in your Expo clone (sibling folder to this repo on your machine).
+- Guides users through app setup choices (theme, state, API, auth, extras).
+- Generates a copy-ready `.env` snippet aligned with the Expo template.
+- Can return a downloadable template ZIP from `POST /api/generate`.
 
 ## Scripts
 
 ```bash
 npm install
-npm run dev    # Next dev server
-npm run lint
+npm run dev     # Next dev server
+npm run build   # Production build
+npm run start   # Run built app
+npm run lint    # ESLint
 npx tsc --noEmit
 ```
 
-## Output
+Wizard route:
 
-1. **Copy .env snippet** — primary path; merges into your Expo clone.
-2. **Try download ZIP** — calls `POST /api/generate` when implemented; otherwise the UI explains the gap.
+- [http://localhost:3000/create](http://localhost:3000/create)
 
----
+## Template Source Configuration
 
-Below is the original create-next-app boilerplate (generic Next.js tips).
+To enable ZIP generation, configure one source:
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+- `EXPO_TEMPLATE_PATH` for a local folder containing the Expo template.
+- Or `EXPO_TEMPLATE_ARCHIVE_URL` for a remote zip/GitHub repo URL.
 
-## Getting Started
+Optional archive helpers:
 
-First, run the development server:
+- `EXPO_TEMPLATE_GIT_REF` (default: `main`) when `EXPO_TEMPLATE_ARCHIVE_URL` is a GitHub repo URL.
+- `EXPO_TEMPLATE_SUBPATH` when the Expo template lives in a subfolder of a monorepo archive (example: `my-react-native-expo-template`).
+
+### Example (monorepo on GitHub)
 
 ```bash
-npm run dev
+EXPO_TEMPLATE_ARCHIVE_URL=https://github.com/bakemonostan/react-native-init
+EXPO_TEMPLATE_GIT_REF=main
+EXPO_TEMPLATE_SUBPATH=my-react-native-expo-template
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Related Docs
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) — learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) — an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) — your feedback and contributions are welcome.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Wizard flow and behavior: `docs/WIZARD_FLOW.md`
+- Wizard/template contract: `../my-react-native-expo-template/docs/WIZARD_AND_TEMPLATE.md`
