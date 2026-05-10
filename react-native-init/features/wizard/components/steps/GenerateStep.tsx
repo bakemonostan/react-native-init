@@ -121,6 +121,17 @@ export function GenerateStep({ config, onEditStep }: Props) {
           <code className="rounded bg-muted px-1 font-mono text-xs">../../my-react-native-expo-template</code> is used
           automatically when present. <strong className="text-foreground">Copy .env</strong> still works without that.
         </p>
+        <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
+          After the ZIP is on your machine, you can <strong className="text-foreground">delete any folders or files</strong> you
+          don&apos;t need — nothing in the bundle is mandatory beyond what your app uses. For a quick minimal shell, unzip,
+          run <code className="rounded bg-muted px-1 font-mono text-xs">npm install</code>, then from the Expo project root run{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">npm run strip-demo</code>: that removes the Components
+          gallery, demo tabs, and example screens, and leaves the root layout plus a single{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">app/(app)/home.tsx</code> whose title follows{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">APP_DISPLAY_NAME</code> from your{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">.env</code> (same value you set as the app name in the
+          wizard).
+        </p>
       </div>
 
       <div>

@@ -28,7 +28,8 @@
     "icons:gen": "node scripts/generate-svg-registry.mjs",
     "postinstall": "node scripts/generate-svg-registry.mjs",
     "bump-version": "node scripts/bump-version.js",
-    "theme-mode": "node scripts/theme-mode.js"
+    "theme-mode": "node scripts/theme-mode.js",
+    "strip-demo": "node ./scripts/strip-template-demo.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

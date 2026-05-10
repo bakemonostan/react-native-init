@@ -7,6 +7,7 @@ export { default as AccordionExample } from "./AccordionExample";
 export { default as AlertExample } from "./AlertExample";
 export { default as AvatarExample } from "./AvatarExample";
 export { default as BadgeExample } from "./BadgeExample";
+export { default as BottomSheetExamples } from "./BottomSheetExamples";
 export { default as CardExample } from "./CardExample";
 export { default as ChipExample } from "./ChipExample";
 export { default as ConfirmationDialogExample } from "./ConfirmationDialogExample";

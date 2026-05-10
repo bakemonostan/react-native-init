@@ -3,6 +3,7 @@ import {
   AlertExample,
   AvatarExample,
   BadgeExample,
+  BottomSheetExamples,
   CardExample,
   ChipExample,
   ConfirmationDialogExample,
@@ -192,6 +193,20 @@ export default function ComponentsScreen() {
           drawerIcon: ({ color, size }) => (
             <IconComponent
               name="albums"
+              library="Ionicons"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Bottom sheets"
+        component={BottomSheetExamples}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <IconComponent
+              name="chevron-up-outline"
               library="Ionicons"
               color={color}
               size={size}

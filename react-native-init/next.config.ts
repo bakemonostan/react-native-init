@@ -17,7 +17,12 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /**
+   * `withPWA` adds a `webpack` hook. Next 16 runs `next dev` with Turbopack by default and
+   * errors unless Turbopack is acknowledged. PWA is off in development, so an empty config is enough.
+   * Production builds use `next build --webpack` (see package.json).
+   */
+  turbopack: {},
 };
 
 export default withPWA(nextConfig);
