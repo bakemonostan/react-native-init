@@ -41,6 +41,7 @@ const ACCENT = {
   idleBadge: "border border-border/50 bg-background text-muted-foreground dark:border-border/60",
 };
 
+/** Logo + title — sidebar only (no reset). */
 function WizardBrand({ className }: { className?: string }) {
   return (
     <Link
@@ -63,9 +64,7 @@ function WizardBrand({ className }: { className?: string }) {
         <p className="truncate text-sm font-semibold text-foreground group-hover:text-foreground">
           {SITE_NAME}
         </p>
-        <p className="hidden truncate text-[11px] text-muted-foreground sm:block">
-          Expo stack wizard
-        </p>
+        <p className="truncate text-[11px] text-muted-foreground">Expo stack wizard</p>
       </div>
     </Link>
   );
@@ -135,46 +134,51 @@ export function WizardShell() {
   }, [reset]);
 
   return (
-    <div className="flex h-[100dvh] max-h-[100dvh] min-h-0 w-full overflow-hidden bg-zinc-50 bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(14,165,233,0.07),transparent_58%)] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(56,189,248,0.09),transparent_58%)]">
-      <nav className="hidden min-h-0 w-72 shrink-0 flex-col overflow-hidden border-r border-border/40 bg-white p-5 shadow-[2px_0_24px_-12px_rgba(15,23,42,0.06)] md:flex xl:w-80 xl:p-6 dark:bg-card/80 dark:shadow-none">
+    <div className='flex h-[100dvh] max-h-[100dvh] min-h-0 w-full overflow-hidden bg-zinc-50 bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(14,165,233,0.07),transparent_58%)] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(56,189,248,0.09),transparent_58%)]'>
+      <nav className='hidden min-h-0 w-72 shrink-0 flex-col overflow-hidden border-r border-border/40 bg-white p-5 shadow-[2px_0_24px_-12px_rgba(15,23,42,0.06)] md:flex xl:w-80 xl:p-6 dark:bg-card/80 dark:shadow-none'>
         <div className="mb-6 shrink-0">
           <WizardBrand />
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
+        <div className='flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto'>
           {STEP_ORDER.map((step, i) => {
             const isDone = i < currentIndex;
             const isActive = step === currentStep;
             return (
               <button
                 key={step}
-                type="button"
+                type='button'
                 onClick={() => setStep(step as StepId)}
                 className={cn(
-                  "flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                  'flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors',
                   isActive
                     ? ACCENT.activeRow
-                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-                )}
-              >
+                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+                )}>
                 <span
                   className={cn(
-                    "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
+                    'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold',
                     isActive
                       ? ACCENT.activeBadge
                       : isDone
                         ? ACCENT.doneBadge
                         : ACCENT.idleBadge,
+                  )}>
+                  {isDone ? (
+                    <Check
+                      className='h-3.5 w-3.5'
+                      strokeWidth={2.5}
+                    />
+                  ) : (
+                    i + 1
                   )}
-                >
-                  {isDone ? <Check className="h-3.5 w-3.5" strokeWidth={2.5} /> : i + 1}
                 </span>
-                <span className="min-w-0 flex-1 leading-snug">
-                  <span className="block font-medium text-foreground">
+                <span className='min-w-0 flex-1 leading-snug'>
+                  <span className='block font-medium text-foreground'>
                     {STEP_LABELS[step]}
                   </span>
                   {isActive ? (
-                    <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
+                    <span className='mt-0.5 block text-xs font-normal text-muted-foreground'>
                       {STEP_HINTS[step]}
                     </span>
                   ) : null}
@@ -185,65 +189,84 @@ export function WizardShell() {
         </div>
 
         <div className="mt-6 shrink-0 space-y-3 border-t border-border/60 pt-5">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="w-full justify-center gap-2 border-border/80 font-medium"
-            onClick={() => setResetDialogOpen(true)}
-          >
-            <RotateCcw className="h-3.5 w-3.5" aria-hidden />
-            Reset
-          </Button>
           <div>
             <div className="mb-1.5 flex items-center justify-between text-xs text-muted-foreground">
               <span>Progress</span>
-              <span className="tabular-nums font-medium text-foreground">
-                {Math.round(progress)}%
-              </span>
+              <span className="tabular-nums font-medium text-foreground">{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-1.5 bg-muted/90" />
           </div>
         </div>
       </nav>
 
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b border-border/40 bg-white/95 px-4 py-2.5 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
-          <WizardBrand className="min-w-0 max-w-[58%]" />
-          <div className="min-w-0 shrink-0 text-right">
-            <p className="truncate text-xs font-semibold text-foreground">
-              {STEP_LABELS[currentStep]}
-            </p>
-            <p className="tabular-nums text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-              {currentIndex + 1} / {STEP_ORDER.length}
-            </p>
+      <div className='flex min-h-0 min-w-0 flex-1 flex-col'>
+        <div className="sticky top-0 z-10 flex shrink-0 border-b border-border/40 bg-white/95 px-4 py-3 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
+          <div className="flex w-full min-w-0 items-center justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Step {currentIndex + 1} of {STEP_ORDER.length}
+              </p>
+              <p className="truncate text-sm font-semibold text-foreground">
+                {STEP_LABELS[currentStep]}
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <span className="tabular-nums text-sm font-semibold text-foreground">
+                {Math.round(progress)}%
+              </span>
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                className="gap-1.5 rounded-lg px-3 font-semibold shadow-sm"
+                onClick={() => setResetDialogOpen(true)}
+              >
+                <RotateCcw className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                Reset
+              </Button>
+            </div>
           </div>
         </div>
 
-        <header className="hidden shrink-0 border-b border-border/40 bg-white/95 px-4 py-3.5 backdrop-blur-md md:block md:px-8 dark:bg-card/90">
-          <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <WizardBrand className="justify-self-start min-w-0" />
-            <p className="justify-self-center text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Step {currentIndex + 1} of {STEP_ORDER.length}
-            </p>
-            <div className="justify-self-end tabular-nums text-xs font-medium text-muted-foreground">
-              <span className="text-foreground">{Math.round(progress)}%</span>
-              <span className="sr-only"> complete</span>
+        <header className="hidden shrink-0 border-b border-border/40 bg-white/95 px-4 py-3 backdrop-blur-md md:block md:px-8 dark:bg-card/90">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Step {currentIndex + 1} of {STEP_ORDER.length}
+              </p>
+              <p className="truncate text-base font-semibold text-foreground">
+                {STEP_LABELS[currentStep]}
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-4">
+              <span className="tabular-nums text-sm font-semibold text-muted-foreground">
+                <span className="text-foreground">{Math.round(progress)}%</span>
+                <span className="sr-only"> complete</span>
+              </span>
+              <Button
+                type="button"
+                variant="destructive"
+                className="gap-2 rounded-lg px-5 py-2 text-sm font-semibold shadow-md"
+                onClick={() => setResetDialogOpen(true)}
+              >
+                <RotateCcw className="h-4 w-4 shrink-0" aria-hidden />
+                Reset
+              </Button>
             </div>
           </div>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 sm:gap-8 sm:p-6 lg:flex-row lg:gap-8 lg:p-8 lg:pb-10">
-            <div className="min-w-0 flex-1">
-              <div className="rounded-xl border border-border/45 bg-white p-5 shadow-[0_16px_48px_-20px_rgba(15,23,42,0.1)] ring-1 ring-black/[0.03] sm:p-8 dark:bg-card dark:ring-white/[0.06]">
+        <div className='min-h-0 flex-1 overflow-y-auto'>
+          <div className='mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 sm:gap-8 sm:p-6 lg:flex-row lg:gap-8 lg:p-8 lg:pb-10'>
+            <div className='min-w-0 flex-1'>
+              <div className='rounded-xl border border-border/45 bg-white p-5 shadow-[0_16px_48px_-20px_rgba(15,23,42,0.1)] ring-1 ring-black/[0.03] sm:p-8 dark:bg-card dark:ring-white/[0.06]'>
                 <StepContent
                   step={currentStep}
                   config={config}
                   onChange={patchConfig}
                   onEditStep={setStep}
                   basicsFieldErrors={
-                    currentStep === "basics" ? basicsFieldErrors : undefined
+                    currentStep === 'basics' ? basicsFieldErrors : undefined
                   }
                 />
               </div>
@@ -252,45 +275,57 @@ export function WizardShell() {
           </div>
         </div>
 
-        <footer className="shrink-0 border-t border-border/45 bg-white/95 backdrop-blur-md dark:bg-card/95">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <footer className='shrink-0 border-t border-border/45 bg-white/95 backdrop-blur-md dark:bg-card/95'>
+          <div className='mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8'>
             <Button
-              variant="ghost"
+              variant='ghost'
               onClick={prevStep}
               disabled={isFirst}
-              className="h-11 rounded-xl px-4 text-muted-foreground hover:bg-muted/80 hover:text-foreground disabled:opacity-40"
-            >
-              <ChevronLeft className="mr-1 h-4 w-4" />
+              className='h-11 rounded-xl px-4 text-muted-foreground hover:bg-muted/80 hover:text-foreground disabled:opacity-40'>
+              <ChevronLeft className='mr-1 h-4 w-4' />
               Back
             </Button>
             {!isLast && (
               <Button
                 onClick={handleNext}
-                className="h-11 rounded-xl px-8 text-base font-semibold shadow-[0_8px_24px_-6px_rgba(15,23,42,0.35)] ring-1 ring-primary/15 transition-[box-shadow,transform] hover:shadow-[0_12px_28px_-8px_rgba(15,23,42,0.4)] active:translate-y-px dark:shadow-[0_8px_24px_-6px_rgba(0,0,0,0.45)]"
-              >
+                className='h-11 rounded-xl px-8 text-base font-semibold shadow-[0_8px_24px_-6px_rgba(15,23,42,0.35)] ring-1 ring-primary/15 transition-[box-shadow,transform] hover:shadow-[0_12px_28px_-8px_rgba(15,23,42,0.4)] active:translate-y-px dark:shadow-[0_8px_24px_-6px_rgba(0,0,0,0.45)]'>
                 Continue
-                <ChevronRight className="ml-1.5 h-4 w-4 opacity-90" />
+                <ChevronRight className='ml-1.5 h-4 w-4 opacity-90' />
               </Button>
             )}
           </div>
         </footer>
       </div>
 
-      <Dialog open={resetDialogOpen} onOpenChange={setResetDialogOpen}>
-        <DialogContent showCloseButton={false} className="sm:max-w-md">
+      <Dialog
+        open={resetDialogOpen}
+        onOpenChange={setResetDialogOpen}>
+        <DialogContent
+          showCloseButton={false}
+          className='sm:max-w-md'>
           <DialogHeader>
             <DialogTitle>Reset wizard?</DialogTitle>
             <DialogDescription>
-              This clears every answer and returns you to the first step. You can&apos;t undo
-              this.
+              This clears every answer and returns you to the first step. You
+              can&apos;t undo this.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
-            <Button type="button" variant="outline" onClick={() => setResetDialogOpen(false)}>
+          <div className='flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end'>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => setResetDialogOpen(false)}>
               Cancel
             </Button>
-            <Button type="button" variant="destructive" className="gap-2" onClick={confirmReset}>
-              <RotateCcw className="h-3.5 w-3.5" aria-hidden />
+            <Button
+              type='button'
+              variant='destructive'
+              className='gap-2'
+              onClick={confirmReset}>
+              <RotateCcw
+                className='h-3.5 w-3.5'
+                aria-hidden
+              />
               Reset
             </Button>
           </div>
