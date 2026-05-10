@@ -7,6 +7,7 @@ import {
   SITE_GITHUB_URL,
   SITE_KEYWORDS,
   SITE_NAME,
+  SITE_OG_IMAGE_PATH,
   SITE_PROFILE_NAME,
   SITE_TWITTER_HANDLE,
 } from "@/lib/site";
@@ -37,18 +38,27 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_PROFILE_NAME, url: SITE_GITHUB_URL }],
   keywords: [...SITE_KEYWORDS],
   creator: SITE_PROFILE_NAME,
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Expo stack configurator`,
     description: SITE_DESCRIPTION,
+    images: [{ url: SITE_OG_IMAGE_PATH, alt: `${SITE_NAME} logo` }],
     ...(siteOrigin ? { url: siteOrigin.href } : {}),
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${SITE_NAME} — Expo stack configurator`,
     description: SITE_DESCRIPTION,
+    images: [SITE_OG_IMAGE_PATH],
     creator: `@${SITE_TWITTER_HANDLE}`,
     site: `@${SITE_TWITTER_HANDLE}`,
   },

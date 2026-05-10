@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,7 +10,7 @@ import {
   type BasicsField,
   validateBasics,
 } from "@/lib/wizardValidation";
-import { SITE_NAME } from "@/lib/site";
+import { SITE_BRAND_ICON_PATH, SITE_NAME } from "@/lib/site";
 import { useWizardStore } from "../store/useWizardStore";
 import {
   STEP_ORDER,
@@ -20,7 +21,7 @@ import {
 } from "../types";
 import { StepContent } from "./StepContent";
 import { SummaryPanel } from "./SummaryPanel";
-import { Check, ChevronLeft, ChevronRight, Home, RotateCcw } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
@@ -33,42 +34,31 @@ const ACCENT = {
   idleBadge: "border border-border/50 bg-background text-muted-foreground dark:border-border/60",
 };
 
-function HomeNavButton({ className }: { className?: string }) {
-  return (
-    <Button
-      asChild
-      variant="ghost"
-      size="icon"
-      className={cn(
-        "shrink-0 rounded-lg text-muted-foreground hover:bg-muted/80 hover:text-foreground",
-        className,
-      )}
-      aria-label="Back to home"
-    >
-      <Link href="/">
-        <Home className="h-5 w-5" aria-hidden />
-      </Link>
-    </Button>
-  );
-}
-
 function WizardBrand({ className }: { className?: string }) {
   return (
-    <div className={cn("flex min-w-0 items-center gap-2.5", className)}>
-      <span
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-[11px] font-bold tracking-tight text-primary-foreground shadow-sm"
-        aria-hidden
-      >
-        RN
-      </span>
+    <Link
+      href="/"
+      className={cn(
+        "group flex min-w-0 max-w-full items-center gap-2.5 rounded-lg p-1 -m-1 outline-none ring-offset-background transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring",
+        className,
+      )}
+      aria-label={`${SITE_NAME} — back to home`}
+    >
+      <Image
+        src={SITE_BRAND_ICON_PATH}
+        alt=""
+        width={32}
+        height={32}
+        className="size-8 shrink-0 rounded-lg object-cover shadow-sm ring-1 ring-border/40"
+        priority
+      />
       <div className="min-w-0 leading-tight">
-        <p className="truncate text-sm font-semibold text-foreground">{SITE_NAME}</p>
-        <p className="truncate text-[11px] text-muted-foreground">Expo stack wizard</p>
+        <p className="truncate text-sm font-semibold text-foreground group-hover:text-foreground">
+          {SITE_NAME}
+        </p>
+        <p className="hidden truncate text-[11px] text-muted-foreground sm:block">Expo stack wizard</p>
       </div>
-      <span className="hidden shrink-0 rounded-md border border-border/60 bg-muted/50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground sm:inline-block">
-        Beta
-      </span>
-    </div>
+    </Link>
   );
 }
 
@@ -136,9 +126,8 @@ export function WizardShell() {
   return (
     <div className="flex min-h-screen flex-1 bg-zinc-50 bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(14,165,233,0.07),transparent_58%)] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(56,189,248,0.09),transparent_58%)]">
       <nav className="hidden min-h-0 w-72 shrink-0 flex-col border-r border-border/40 bg-white p-5 shadow-[2px_0_24px_-12px_rgba(15,23,42,0.06)] md:flex xl:w-80 xl:p-6 dark:bg-card/80 dark:shadow-none">
-        <div className="mb-6 flex items-start gap-2">
-          <HomeNavButton />
-          <WizardBrand className="min-w-0 flex-1" />
+        <div className="mb-6">
+          <WizardBrand />
         </div>
 
         <div className="flex flex-1 flex-col gap-1">
@@ -208,24 +197,21 @@ export function WizardShell() {
       </nav>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-border/40 bg-white/95 px-4 py-3 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
-          <div className="flex min-w-0 flex-1 items-center gap-1">
-            <HomeNavButton className="-ml-1" />
-            <span className="min-w-0 truncate text-sm font-semibold text-foreground">
+        <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-border/40 bg-white/95 px-4 py-2.5 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
+          <WizardBrand className="min-w-0 max-w-[58%]" />
+          <div className="min-w-0 shrink-0 text-right">
+            <p className="truncate text-xs font-semibold text-foreground">
               {STEP_LABELS[currentStep]}
-            </span>
+            </p>
+            <p className="tabular-nums text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+              {currentIndex + 1} / {STEP_ORDER.length}
+            </p>
           </div>
-          <span className="shrink-0 tabular-nums text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            {currentIndex + 1} / {STEP_ORDER.length}
-          </span>
         </div>
 
         <header className="hidden border-b border-border/40 bg-white/95 px-4 py-3.5 backdrop-blur-md md:block md:px-8 dark:bg-card/90">
           <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <div className="justify-self-start flex min-w-0 items-center gap-1">
-              <HomeNavButton />
-              <WizardBrand className="min-w-0" />
-            </div>
+            <WizardBrand className="justify-self-start min-w-0" />
             <p className="justify-self-center text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Step {currentIndex + 1} of {STEP_ORDER.length}
             </p>

@@ -10,6 +10,11 @@ export const SITE_CONTACT_EMAIL = "ehizomokhomion@gmail.com";
 
 export const SITE_NAME = "RN Init";
 
+/** Served from /public — wizard header + default app icon */
+export const SITE_BRAND_ICON_PATH = "/android-chrome-192x192.png";
+/** Larger art for OG / sharing (splash-style still from your export) */
+export const SITE_OG_IMAGE_PATH = "/splash-brand.png";
+
 export const SITE_DESCRIPTION =
   "Configure an Expo + React Native stack with a guided wizard: paste-ready .env keys, optional template ZIP, SVGR typed icons, Expo Router, TanStack Query + Axios, auth modes — align choices before you ship.";
 
