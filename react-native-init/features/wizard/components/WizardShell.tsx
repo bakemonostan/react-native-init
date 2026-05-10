@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,7 @@ import {
 } from "../types";
 import { StepContent } from "./StepContent";
 import { SummaryPanel } from "./SummaryPanel";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Home, RotateCcw } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
@@ -31,6 +32,25 @@ const ACCENT = {
   doneBadge: "bg-emerald-500/15 text-emerald-800 ring-1 ring-emerald-600/25 dark:text-emerald-300",
   idleBadge: "border border-border/50 bg-background text-muted-foreground dark:border-border/60",
 };
+
+function HomeNavButton({ className }: { className?: string }) {
+  return (
+    <Button
+      asChild
+      variant="ghost"
+      size="icon"
+      className={cn(
+        "shrink-0 rounded-lg text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+        className,
+      )}
+      aria-label="Back to home"
+    >
+      <Link href="/">
+        <Home className="h-5 w-5" aria-hidden />
+      </Link>
+    </Button>
+  );
+}
 
 function WizardBrand({ className }: { className?: string }) {
   return (
@@ -105,11 +125,20 @@ export function WizardShell() {
     nextStep();
   };
 
+  const handleReset = useCallback(() => {
+    reset();
+    setBasicsFieldErrors({});
+    toast.success("Wizard reset", {
+      description: "All choices cleared.",
+    });
+  }, [reset]);
+
   return (
     <div className="flex min-h-screen flex-1 bg-zinc-50 bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(14,165,233,0.07),transparent_58%)] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(56,189,248,0.09),transparent_58%)]">
       <nav className="hidden min-h-0 w-72 shrink-0 flex-col border-r border-border/40 bg-white p-5 shadow-[2px_0_24px_-12px_rgba(15,23,42,0.06)] md:flex xl:w-80 xl:p-6 dark:bg-card/80 dark:shadow-none">
-        <div className="mb-6">
-          <WizardBrand />
+        <div className="mb-6 flex items-start gap-2">
+          <HomeNavButton />
+          <WizardBrand className="min-w-0 flex-1" />
         </div>
 
         <div className="flex flex-1 flex-col gap-1">
@@ -158,15 +187,13 @@ export function WizardShell() {
         <div className="mt-6 space-y-3 border-t border-border/60 pt-5">
           <Button
             type="button"
-            variant="ghost"
+            variant="outline"
             size="sm"
-            className="h-auto justify-start px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => {
-              reset();
-              setBasicsFieldErrors({});
-            }}
+            className="w-full justify-center gap-2 border-border/80 font-medium"
+            onClick={handleReset}
           >
-            Reset wizard
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden />
+            Reset
           </Button>
           <div>
             <div className="mb-1.5 flex items-center justify-between text-xs text-muted-foreground">
@@ -182,9 +209,12 @@ export function WizardShell() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-border/40 bg-white/95 px-4 py-3 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
-          <span className="min-w-0 truncate text-sm font-semibold text-foreground">
-            {STEP_LABELS[currentStep]}
-          </span>
+          <div className="flex min-w-0 flex-1 items-center gap-1">
+            <HomeNavButton className="-ml-1" />
+            <span className="min-w-0 truncate text-sm font-semibold text-foreground">
+              {STEP_LABELS[currentStep]}
+            </span>
+          </div>
           <span className="shrink-0 tabular-nums text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
             {currentIndex + 1} / {STEP_ORDER.length}
           </span>
@@ -192,7 +222,10 @@ export function WizardShell() {
 
         <header className="hidden border-b border-border/40 bg-white/95 px-4 py-3.5 backdrop-blur-md md:block md:px-8 dark:bg-card/90">
           <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <WizardBrand className="justify-self-start" />
+            <div className="justify-self-start flex min-w-0 items-center gap-1">
+              <HomeNavButton />
+              <WizardBrand className="min-w-0" />
+            </div>
             <p className="justify-self-center text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Step {currentIndex + 1} of {STEP_ORDER.length}
             </p>

@@ -8,6 +8,7 @@ import {
   SITE_KEYWORDS,
   SITE_NAME,
   SITE_PROFILE_NAME,
+  SITE_TWITTER_HANDLE,
 } from "@/lib/site";
 import "./globals.css";
 
@@ -48,6 +49,8 @@ export const metadata: Metadata = {
     card: "summary",
     title: `${SITE_NAME} — Expo stack configurator`,
     description: SITE_DESCRIPTION,
+    creator: `@${SITE_TWITTER_HANDLE}`,
+    site: `@${SITE_TWITTER_HANDLE}`,
   },
   robots: {
     index: true,
