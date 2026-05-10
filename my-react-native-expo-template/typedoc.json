@@ -1,0 +1,20 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "Components",
+  "entryPoints": [
+    "components/ui/index.ts",
+    "constants/Colors.ts",
+    "config/themeFromEnv.ts",
+    "context/ThemeContext.tsx",
+    "hooks/useTheme.ts"
+  ],
+  "entryPointStrategy": "resolve",
+  "tsconfig": "tsconfig.json",
+  "out": "docs/api",
+  "readme": "components/ui/README.md",
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "hideGenerator": true,
+  "sort": ["source-order"]
+}

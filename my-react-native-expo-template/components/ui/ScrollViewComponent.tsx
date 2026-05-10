@@ -9,7 +9,7 @@ import {
 /**
  * Props interface for the ScrollViewComponent
  */
-interface ScrollViewComponentProps extends ScrollViewProps {
+export interface ScrollViewComponentProps extends ScrollViewProps {
   /**
    * Custom styles for the content container
    */

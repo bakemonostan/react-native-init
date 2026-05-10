@@ -7,10 +7,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
-import { Image, ImageSourcePropType } from "react-native";
 
 // Create a type-safe icon components object for vector icons
-const IconComponents = {
+export const IconComponents = {
   FontAwesome,
   MaterialIcons,
   Ionicons,
@@ -21,7 +20,7 @@ const IconComponents = {
 } as const;
 
 // Infer everything from the objects
-type VectorIconName<L extends keyof typeof IconComponents> =
+export type VectorIconName<L extends keyof typeof IconComponents> =
   React.ComponentProps<(typeof IconComponents)[L]>["name"];
 
 interface BaseIconProps {
@@ -32,41 +31,32 @@ interface BaseIconProps {
   size?: number;
 }
 
-interface VectorIconProps<L extends keyof typeof IconComponents>
+export interface VectorIconProps<L extends keyof typeof IconComponents>
   extends BaseIconProps {
   library: L;
   name: VectorIconName<L>;
   color?: string;
 }
 
-interface CustomIconProps extends BaseIconProps {
-  library: "custom";
-  source: ImageSourcePropType;
-}
+export type IconLibrary = keyof typeof IconComponents;
 
-export type IconLibrary = keyof typeof IconComponents | "custom";
-
-export type IconComponentProps =
-  | VectorIconProps<keyof typeof IconComponents>
-  | CustomIconProps;
+/** Props for {@link IconComponent} — vector fonts only (use `@/icons` / SvgIcon for SVG assets). */
+export type IconComponentProps = VectorIconProps<keyof typeof IconComponents>;
 
 /**
  * Vector-only icon props for slots (chips, form fields, empty states, etc.).
- * Excludes `library: "custom"` so `name` is always required and matches `IconComponent`.
  */
 export type VectorIconSlotProps = Pick<
-  Extract<IconComponentProps, { library: keyof typeof IconComponents }>,
+  IconComponentProps,
   "name" | "library" | "size"
 >;
 
 /**
- * A flexible Icon component that supports multiple vector icon libraries and custom image icons.
+ * Vector icon component (@expo/vector-icons). For SVG assets, import **`SvgIcon`** from **`@/icons`**.
  *
  * ## Features
  * - **Type Safety**: TypeScript validates icon names for each library
  * - **Multiple Libraries**: Supports 7 popular icon libraries
- * - **Custom Icons**: Use your own image files as icons
- * - **Consistent API**: Same props interface across all icon types
  *
  * ## Supported Libraries
  * - `FontAwesome` - Classic font awesome icons
@@ -79,10 +69,9 @@ export type VectorIconSlotProps = Pick<
  *
  * @example
  * ```tsx
- * // Vector Icon with type-safe name validation
  * <IconComponent
  *   library="Ionicons"
- *   name="home" // TypeScript autocomplete and validation
+ *   name="home"
  *   size={24}
  *   color="#007AFF"
  * />
@@ -90,56 +79,22 @@ export type VectorIconSlotProps = Pick<
  *
  * @example
  * ```tsx
- * // Different icon libraries
  * <IconComponent library="FontAwesome" name="heart" size={20} color="red" />
- * <IconComponent library="MaterialIcons" name="settings" size={28} />
- * <IconComponent library="Feather" name="search" size={16} color="#666" />
- * <IconComponent library="AntDesign" name="plus" size={32} />
- * ```
- *
- * @example
- * ```tsx
- * // Custom image icon from local assets
- * <IconComponent
- *   library="custom"
- *   source={require('../../assets/images/custom-icon.png')}
- *   size={24}
- * />
- * ```
- *
- * @example
- * ```tsx
- * // Custom icon from remote URL
- * <IconComponent
- *   library="custom"
- *   source={{ uri: 'https://example.com/icon.png' }}
- *   size={32}
- * />
  * ```
  */
 export default function IconComponent(props: IconComponentProps) {
   const { colors } = useTheme();
-  const { size = 24 } = props;
+  const { size = 24, library, name } = props;
 
-  if (props.library === "custom") {
-    return (
-      <Image
-        source={props.source}
-        style={{ width: size, height: size }}
-        resizeMode="contain"
-      />
-    );
-  }
-
-  const Icon = IconComponents[props.library];
+  const Icon = IconComponents[library];
   if (!Icon) {
-    console.warn(`Icon library "${props.library}" not found`);
+    console.warn(`Icon library "${String(library)}" not found`);
     return null;
   }
 
   return (
     <Icon
-      name={props.name as any}
+      name={name as never}
       size={size}
       color={props.color ?? colors.text}
     />

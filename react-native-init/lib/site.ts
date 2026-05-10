@@ -5,7 +5,7 @@ export const SITE_PROFILE_NAME = "Ehiz Omokhomion";
 export const SITE_NAME = "RN Init";
 
 export const SITE_DESCRIPTION =
-  "Configure an Expo + React Native stack aligned with the open template: walk the wizard, copy a paste-ready .env, and ship faster.";
+  "Configure an Expo + React Native stack: wizard → paste-ready .env or ZIP, typed SVG pipeline (SVGR), Router, Query, auth flows — ship faster.";
 
 export const SITE_KEYWORDS = [
   "React Native",
@@ -17,6 +17,8 @@ export const SITE_KEYWORDS = [
   "TypeScript",
   "mobile app template",
   "environment variables",
+  "SVG icons",
+  "SVGR",
 ] as const;
 
 /** Resolve public site URL for Open Graph / canonical (Vercel or env override). */

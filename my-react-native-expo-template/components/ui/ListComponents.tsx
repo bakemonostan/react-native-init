@@ -43,7 +43,7 @@ export interface ListItemProps {
    */
   leftIcon?: {
     name: IconName;
-    library: Exclude<IconLibrary, "custom">;
+    library: IconLibrary;
     color?: string;
     size?: number;
   };
@@ -53,7 +53,7 @@ export interface ListItemProps {
    */
   rightIcon?: {
     name: IconName;
-    library: Exclude<IconLibrary, "custom">;
+    library: IconLibrary;
     color?: string;
     size?: number;
   };

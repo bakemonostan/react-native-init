@@ -20,7 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { DarkMode, ScaffoldConfig } from "../../types";
 import { ChevronDown } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 interface Props {
   config: ScaffoldConfig;
@@ -159,11 +159,6 @@ function TokenGroupsEditor({
 export function StylingStep({ config, onChange }: Props) {
   const showBothAppearances = config.darkMode === "system";
   const [appearanceTab, setAppearanceTab] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    if (config.darkMode === "light") setAppearanceTab("light");
-    if (config.darkMode === "dark") setAppearanceTab("dark");
-  }, [config.darkMode]);
 
   const editingAppearance: "light" | "dark" =
     config.darkMode === "light"

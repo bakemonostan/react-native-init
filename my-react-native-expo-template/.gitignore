@@ -40,5 +40,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# TypeDoc (generated)
+docs/api/
+
 app-example
 .cursor/

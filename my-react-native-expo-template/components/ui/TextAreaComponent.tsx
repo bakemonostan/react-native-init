@@ -12,7 +12,7 @@ import {
 import { FontWeight, getFontFamily } from "./fontConfig";
 import TextComponent from "./TextComponent";
 
-export type FontSize =
+export type TextAreaFontSize =
   | "xs"
   | "sm"
   | "base"
@@ -25,7 +25,7 @@ export interface TextAreaComponentProps extends Omit<TextInputProps, "multiline"
   weight?: FontWeight;
   label?: string;
   color?: string;
-  size?: FontSize;
+  size?: TextAreaFontSize;
   inputStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   backgroundColor?: string;
@@ -37,7 +37,7 @@ export interface TextAreaComponentProps extends Omit<TextInputProps, "multiline"
   maxLength?: number;
 }
 
-const FONT_SIZE_MAP: Record<Exclude<FontSize, number>, number> = {
+const FONT_SIZE_MAP: Record<Exclude<TextAreaFontSize, number>, number> = {
   xs: 12,
   sm: 14,
   base: 16,
@@ -104,7 +104,7 @@ export default function TextAreaComponent({
     backgroundColor ??
     (error ? colors.errorBackground : colors.backgroundSecondary);
 
-  const getFontSize = (sizeValue: FontSize): number => {
+  const getFontSize = (sizeValue: TextAreaFontSize): number => {
     return typeof sizeValue === "number" ? sizeValue : FONT_SIZE_MAP[sizeValue];
   };
 

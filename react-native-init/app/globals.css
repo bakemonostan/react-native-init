@@ -128,3 +128,18 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  /** Light blueprint grid for landing hero (no inline styles). */
+  .hero-blueprint-grid {
+    background-image:
+      linear-gradient(to right, oklch(0.88 0 0 / 0.45) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.88 0 0 / 0.45) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .dark .hero-blueprint-grid {
+    background-image:
+      linear-gradient(to right, oklch(0.35 0 0 / 0.35) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.35 0 0 / 0.35) 1px, transparent 1px);
+  }
+}

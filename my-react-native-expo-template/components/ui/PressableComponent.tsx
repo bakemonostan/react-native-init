@@ -382,11 +382,11 @@ export default function PressableComponent({
                 <IconComponent
                   {...(leftAccessory as IconComponentProps)}
                   size={leftAccessory.size || 20}
-                  {...(leftAccessory.library !== "custom" && {
-                    color: isInteractionDisabled
+                  color={
+                    isInteractionDisabled
                       ? colors.textDim
-                      : leftAccessory.color,
-                  })}
+                      : leftAccessory.color
+                  }
                 />
               ) : (
                 leftAccessory
@@ -423,11 +423,11 @@ export default function PressableComponent({
                   <IconComponent
                     {...(rightAccessory as IconComponentProps)}
                     size={rightAccessory.size || 20}
-                    {...(rightAccessory.library !== "custom" && {
-                      color: isInteractionDisabled
+                    color={
+                      isInteractionDisabled
                         ? colors.textDim
-                        : rightAccessory.color,
-                    })}
+                        : rightAccessory.color
+                    }
                   />
                 ) : (
                   rightAccessory

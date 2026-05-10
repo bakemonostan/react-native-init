@@ -38,7 +38,7 @@ function applyBrandPrimary(base: AppColors, hex: string): AppColors {
 
 const THEME_MODE_KEY = "theme_mode";
 
-interface ThemeContextValue {
+export interface ThemeContextValue {
   /** Current mode setting: "light", "dark", or "auto" (follows system). */
   mode: ThemeMode;
   /** Resolved scheme after considering mode + system preference. */
@@ -62,7 +62,7 @@ const ThemeContext = createContext<ThemeContextValue>({
   setMode: () => {},
 });
 
-interface ThemeProviderProps {
+export interface ThemeProviderProps {
   children: React.ReactNode;
   /**
    * Starting mode.

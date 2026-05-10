@@ -4,5 +4,6 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "cmake.sourceDirectory": "/Users/best/Desktop/rn-init/my-react-native-expo-template/node_modules/expo-modules-core/android"
 }

@@ -1,6 +1,7 @@
 import IconComponent from "@/components/ui/IconComponent";
 import { Screen } from "@/components/ui/Screen";
 import TextComponent from "@/components/ui/TextComponent";
+import { SvgIcon } from "@/icons";
 import { useTheme } from "@/hooks/useTheme";
 import React from "react";
 import { View } from "react-native";
@@ -15,6 +16,19 @@ export default function IconExample() {
           size="lg"
           weight="bold">
           Icon Component
+        </TextComponent>
+        <TextComponent size="sm" color={colors.textSecondary}>
+          SVG pack: drop files in assets/icons/my-icons/ — the typed registry
+          regenerates on npm install (postinstall). Tint with currentColor in the
+          SVG.
+        </TextComponent>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
+          <SvgIcon name="Placeholder" size={28} color={colors.primary} />
+          <SvgIcon name="Placeholder" size={36} color={colors.error} />
+          <SvgIcon name="Placeholder" size={44} color={colors.text} />
+        </View>
+        <TextComponent size="lg" weight="bold" style={{ marginTop: 8 }}>
+          Vector libraries (Ionicons, etc.)
         </TextComponent>
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
           <IconComponent
@@ -58,16 +72,6 @@ export default function IconExample() {
             library="Entypo"
             size={72}
             color={colors.error}
-          />
-          <IconComponent
-            source={require("@/assets/images/react-logo.png")}
-            library="custom"
-            size={82}
-          />
-          <IconComponent
-            source={require("@/assets/images/splash-icon.png")}
-            library="custom"
-            size={92}
           />
         </View>
       </View>

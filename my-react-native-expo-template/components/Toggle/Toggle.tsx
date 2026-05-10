@@ -16,7 +16,8 @@ import {
 
 import TextComponent from "@/components/ui/TextComponent";
 
-interface TextProps {
+/** Props forwarded to the optional label / helper `TextComponent`. */
+export interface ToggleTextProps {
   text?: string;
   children?: React.ReactNode;
   style?: StyleProp<TextStyle>;
@@ -78,7 +79,7 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
   /**
    * Pass any additional props directly to the label Text component.
    */
-  LabelTextProps?: TextProps;
+  LabelTextProps?: ToggleTextProps;
   /**
    * The helper text to display.
    */
@@ -86,7 +87,7 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
   /**
    * Pass any additional props directly to the helper Text component.
    */
-  HelperTextProps?: TextProps;
+  HelperTextProps?: ToggleTextProps;
   /**
    * The input control for the type of toggle component
    */

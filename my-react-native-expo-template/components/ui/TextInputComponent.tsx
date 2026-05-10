@@ -13,7 +13,7 @@ import TextComponent from "./TextComponent";
 /**
  * Font size presets for consistent typography
  */
-export type FontSize =
+export type TextInputFontSize =
   | "xs" // 12
   | "sm" // 14
   | "base" // 16
@@ -41,7 +41,7 @@ export interface TextInputComponentProps extends TextInputProps {
    * Font size — preset or custom number
    * @default 'base'
    */
-  size?: FontSize;
+  size?: TextInputFontSize;
 
   /**
    * Custom styles applied to the text input
@@ -59,7 +59,7 @@ export interface TextInputComponentProps extends TextInputProps {
   errorColor?: string;
 }
 
-const FONT_SIZE_MAP: Record<Exclude<FontSize, number>, number> = {
+const FONT_SIZE_MAP: Record<Exclude<TextInputFontSize, number>, number> = {
   xs: 12,
   sm: 14,
   base: 16,
@@ -100,7 +100,7 @@ export default function TextInputComponent({
       ? ringColor
       : colors.border;
 
-  const getFontSize = (sizeValue: FontSize): number => {
+  const getFontSize = (sizeValue: TextInputFontSize): number => {
     return typeof sizeValue === "number" ? sizeValue : FONT_SIZE_MAP[sizeValue];
   };
 

@@ -26,7 +26,7 @@ This folder contains project-agnostic versions of UI components that can be easi
 - **AlertComponent** - Alert/notification component with variants (info, success, warning, error)
 - **AvatarComponent** - Avatar with image, initials, or empty states
 - **BadgeComponent** - Badge for notifications and status indicators
-- **IconComponent** - Icon component supporting multiple libraries and custom images
+- **IconComponent** - Vector icons (@expo/vector-icons); use **`SvgIcon`** (`@/icons`) for SVG assets
 - **ImageComponent** - Image with loading and error states
 - **LoadingComponent** - Loading spinner with optional message
 - **ModalComponent** - Modal overlay with customizable content

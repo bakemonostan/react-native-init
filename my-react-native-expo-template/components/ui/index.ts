@@ -16,10 +16,12 @@ export type { BadgeComponentProps } from "./BadgeComponent";
 
 export { ExternalLink } from "./ExternalLink";
 
-export { default as IconComponent } from "./IconComponent";
+export { IconComponents, default as IconComponent } from "./IconComponent";
 export type {
   IconComponentProps,
   IconLibrary,
+  VectorIconName,
+  VectorIconProps,
   VectorIconSlotProps,
 } from "./IconComponent";
 
@@ -45,6 +47,7 @@ export { Screen } from "./Screen";
 export type { ExtendedEdge, ScreenProps } from "./Screen";
 
 export { default as ScrollViewComponent } from "./ScrollViewComponent";
+export type { ScrollViewComponentProps } from "./ScrollViewComponent";
 
 export { default as SimpleKeyboardAvoidingView } from "./SimpleKeyboardAvoidingView";
 export type { SimpleKeyboardAvoidingViewProps } from "./SimpleKeyboardAvoidingView";
@@ -63,10 +66,16 @@ export type {
 } from "./TextComponent";
 
 export { default as TextInputComponent } from "./TextInputComponent";
-export type { TextInputComponentProps } from "./TextInputComponent";
+export type {
+  TextInputComponentProps,
+  TextInputFontSize,
+} from "./TextInputComponent";
 
 export { default as TextAreaComponent } from "./TextAreaComponent";
-export type { TextAreaComponentProps } from "./TextAreaComponent";
+export type {
+  TextAreaComponentProps,
+  TextAreaFontSize,
+} from "./TextAreaComponent";
 
 export { default as RadioButtonCard } from "./RadioButtonCard";
 export type { RadioButtonCardProps } from "./RadioButtonCard";
@@ -80,10 +89,15 @@ export type { ErrorStateProps } from "./ErrorState";
 export { default as GradientView } from "./GradientView";
 export type { GradientViewProps } from "./GradientView";
 
-export { default as SkeletonComponent } from "./SkeletonComponent";
+export {
+  ANIMATION_DIRECTION,
+  ANIMATION_TYPE,
+  default as SkeletonComponent,
+} from "./SkeletonComponent";
 export type { SkeletonComponentProps } from "./SkeletonComponent";
 
 export { default as DividerComponent } from "./DividerComponent";
+export type { DividerComponentProps } from "./DividerComponent";
 
 // Toggle / selection inputs (from components/Toggle/)
 export { Checkbox } from "../Toggle/Checkbox";
@@ -96,7 +110,11 @@ export { Switch } from "../Toggle/Switch";
 export type { SwitchToggleProps } from "../Toggle/Switch";
 
 export { Toggle } from "../Toggle/Toggle";
-export type { ToggleProps, BaseToggleInputProps } from "../Toggle/Toggle";
+export type {
+  BaseToggleInputProps,
+  ToggleProps,
+  ToggleTextProps,
+} from "../Toggle/Toggle";
 
 // New components
 export { default as ToastComponent } from "./ToastComponent";

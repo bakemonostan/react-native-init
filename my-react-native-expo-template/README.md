@@ -48,6 +48,9 @@ npm run web                       # Expo web target
 # Code quality
 npm run lint                      # Expo ESLint
 
+# SVG icons (assets/icons/my-icons → typed SvgIcon; also runs on npm install)
+npm run icons:gen                 # Regenerate icons/svgRegistry.tsx manually if needed
+
 # Versioning
 npm run bump-version              # Bump version in package.json, iOS, Android
 
@@ -56,6 +59,10 @@ npm run theme-mode light          # Force light mode
 npm run theme-mode dark           # Force dark mode
 npm run theme-mode auto           # Follow system (default)
 ```
+
+## SVG icons (SVGR + typed registry)
+
+Add `.svg` files under `assets/icons/my-icons/`. The registry **regenerates automatically on `npm install`** (`postinstall`). Use **`SvgIcon`** from `@/icons` (see **Components → Icons** in the app). Optional reference: [`docs/SVG_ICONS.md`](docs/SVG_ICONS.md).
 
 ## iOS First Run (Important)
 
@@ -103,6 +110,22 @@ store/        Zustand stores
 theme/        Design tokens
 utils/        Shared helpers
 docs/         Project-specific docs
+```
+
+## Component API docs (TypeDoc)
+
+HTML reference for exports from `components/ui/index.ts` (TypeDoc follows re-exports into each component file). See [TypeDoc](https://typedoc.org/).
+
+```bash
+npm run docs
+```
+
+Open `docs/api/index.html` in a browser. Regenerated output is listed in `.gitignore` (`docs/api/`).
+
+Optional watch while editing comments:
+
+```bash
+npm run docs:watch
 ```
 
 ## Related Docs
