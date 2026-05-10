@@ -4,11 +4,14 @@ import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
+    id: "/",
     name: SITE_NAME,
     short_name: SITE_NAME,
     description: SITE_DESCRIPTION,
     start_url: "/",
+    scope: "/",
     display: "standalone",
+    display_override: ["standalone", "browser"],
     background_color: "#fafafa",
     theme_color: "#0f3d32",
     orientation: "portrait-primary",

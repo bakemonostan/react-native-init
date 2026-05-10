@@ -68,6 +68,11 @@ export const metadata: Metadata = {
   },
   ...(siteOrigin ? { alternates: { canonical: siteOrigin.href } } : {}),
   category: "technology",
+  appleWebApp: {
+    capable: true,
+    title: SITE_NAME,
+    statusBarStyle: "default",
+  },
 };
 
 export const viewport: Viewport = {
