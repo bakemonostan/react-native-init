@@ -1,6 +1,10 @@
 /** Public site copy — GitHub profile for attribution links */
 export const SITE_GITHUB_URL = "https://github.com/bakemonostan";
-export const SITE_PROFILE_NAME = "Ehiz Omokhomion";
+export const SITE_PROFILE_NAME = "BakemonoStan";
+
+export const SITE_X_URL = "https://x.com/BakemonoStan";
+export const SITE_LINKEDIN_URL = "https://www.linkedin.com/in/omokhomionehis/";
+export const SITE_CONTACT_EMAIL = "ehizomokhomion@gmail.com";
 
 export const SITE_NAME = "RN Init";
 

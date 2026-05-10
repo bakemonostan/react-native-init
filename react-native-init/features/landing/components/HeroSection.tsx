@@ -2,14 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import {
-  ArrowRight,
-  Archive,
-  ArrowRightLeft,
-  Cable,
-  Layers,
-  Shapes,
-} from "lucide-react";
+import { Archive, ArrowRightLeft, Cable, Layers, Shapes } from "lucide-react";
 
 const DEV_BADGES = [
   { label: "Expo", className: "border-sky-500/40 bg-sky-500/12 text-sky-900 dark:text-sky-100" },
@@ -120,16 +113,23 @@ export function HeroSection() {
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-              <Button asChild size="lg" className="h-11 px-7 shadow-md">
-                <Link href="/create">
-                  Start wizard
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <span className="text-xs text-muted-foreground">
-                ~5 min · nothing to wire by hand first
-              </span>
+            <div className="flex flex-col gap-3 pt-1 lg:pt-2">
+              <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:justify-start">
+                <Button
+                  asChild
+                  size="lg"
+                  className={cn(
+                    "h-12 min-h-12 w-full rounded-xl px-8 text-base font-semibold tracking-tight shadow-lg shadow-black/20 sm:w-auto sm:min-w-[13.5rem]",
+                    "ring-2 ring-primary/25 transition-[box-shadow,transform] hover:shadow-xl hover:shadow-black/25 hover:ring-primary/35",
+                    "dark:shadow-black/50 dark:ring-primary/30 dark:hover:shadow-black/60",
+                  )}
+                >
+                  <Link href="/create">Start wizard</Link>
+                </Button>
+                <span className="text-center text-[13px] leading-snug text-muted-foreground sm:text-left">
+                  ~5 min · nothing to wire by hand first
+                </span>
+              </div>
             </div>
           </div>
 
