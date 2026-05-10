@@ -1,5 +1,7 @@
 import type { ScaffoldConfig } from "@/features/wizard/types";
 import { buildEnvFromWizardConfig } from "@/lib/buildEnvSnippet";
+import { buildWizardSemanticTokensSource } from "@/lib/generator/buildWizardSemanticTokensSource";
+import { stripI18nFromZip } from "@/lib/generator/stripI18nFromZip";
 import { buildZipReadme } from "@/lib/generator/zipReadme";
 import fs from "fs/promises";
 import JSZip from "jszip";
@@ -226,8 +228,16 @@ export async function generateProjectZip(
       ? await zipFromFilesystem(source.root)
       : await zipFromRemoteArchive(source.url);
 
+  zip.file(
+    "constants/wizardSemanticTokens.generated.ts",
+    buildWizardSemanticTokensSource(config),
+  );
   zip.file(".env", buildEnvFromWizardConfig(config));
   zip.file("RN_INIT_README.txt", buildZipReadme(config));
+
+  if (!config.useI18n) {
+    await stripI18nFromZip(zip);
+  }
 
   return zip.generateAsync({
     type: "nodebuffer",

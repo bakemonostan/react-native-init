@@ -38,7 +38,7 @@ export interface ScaffoldConfig {
   // Step 3 — Styling & Theme
   darkMode: DarkMode;
   primaryColor: string;
-  /** Full semantic map (light + dark) → EXPO_PUBLIC_THEME_* in `.env`; template merges over base Colors. */
+  /** Full semantic map (light + dark) → `constants/wizardSemanticTokens.generated.ts` in the ZIP; merged in `Colors.ts`. */
   themeTokens: ThemeTokens;
 
   // Step 4 — State

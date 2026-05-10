@@ -1,4 +1,8 @@
 import type { ThemeTokenSet } from "@/config/themeFromEnv";
+import {
+  wizardSemanticDark,
+  wizardSemanticLight,
+} from "@/constants/wizardSemanticTokens.generated";
 
 /**
  * @fileoverview Central color system: shared **palette**, **light** / **dark** semantic tokens, and **`AppColors`** typing for `ThemeProvider`.
@@ -8,16 +12,15 @@ import type { ThemeTokenSet } from "@/config/themeFromEnv";
  * | Layer | Use |
  * |-------|-----|
  * | **`palette`** | Raw hex/RGBA scales (neutral, primary brand, status). Shared by both themes. Prefer **semantic** tokens in UI. |
- * | **`lightColors` / `darkColors`** | Semantic names: `background`, `text`, `primary`, `border`, etc. |
+ * | **`lightColors` / `darkColors`** | Merged semantic map: static base + **wizard** tokens from {@link wizardSemanticLight} / {@link wizardSemanticDark}. |
  * | **`colors`** | Alias of **`lightColors`** — only for static assets or non-theme code. |
  *
  * ## Usage
  *
  * - **In screens & components:** use **`useTheme().colors`** (`context/ThemeContext`) so light/dark updates automatically.
  * - **Avoid** `import { colors }` for surfaces/text that should follow the active scheme; use theme hooks instead.
- * - **Brand (quick):** set **`EXPO_PUBLIC_BRAND_PRIMARY`** when you are not using the full wizard token map.
- * - **Full semantic map:** `EXPO_PUBLIC_THEME_LIGHT_*` / `EXPO_PUBLIC_THEME_DARK_*` from RN Init — merged in `ThemeProvider` via {@link mergeSemanticTokens}.
- * - **Brand (full ramp):** edit **`palette.primary*`** here for code that still reads the shared ramp.
+ * - **Wizard / ZIP:** RN Init writes `constants/wizardSemanticTokens.generated.ts` — edit that file or re-export a ZIP; do not mirror theme into `EXPO_PUBLIC_THEME_*`.
+ * - **Brand ramp:** edit **`palette.primary*`** for code that still reads the shared ramp (e.g. some alerts).
  *
  * @example Theme-aware (preferred)
  * ```tsx
@@ -32,18 +35,10 @@ import type { ThemeTokenSet } from "@/config/themeFromEnv";
  *   );
  * }
  * ```
- *
- * @example Static light tokens (stories, one-off)
- * ```tsx
- * import { colors } from "@/constants/Colors";
- *
- * const previewBg = colors.background; // always light palette
- * ```
  */
 
 /**
  * Shared raw scales: neutrals, primary brand ramp, status, overlays.
- * **`lightColors`** / **`darkColors`** reference this object; both themes see the same **`palette`** keys.
  */
 const palette = {
   white: "#FFFFFF",
@@ -60,7 +55,6 @@ const palette = {
   neutral800: "#262626",
   neutral900: "#171717",
 
-  // Primary brand scale — swap these for your brand color
   primary100: "#EFF6FF",
   primary200: "#BFDBFE",
   primary300: "#93C5FD",
@@ -71,7 +65,6 @@ const palette = {
   primary800: "#1E40AF",
   primary900: "#1E3A8A",
 
-  // Status colors
   success100: "#DCFCE7",
   success500: "#22C55E",
   warning100: "#FEF9C3",
@@ -84,11 +77,8 @@ const palette = {
   overlay50: "rgba(0, 0, 0, 0.5)",
 } as const;
 
-/**
- * Semantic tokens for **light** mode: light backgrounds, dark text, standard borders.
- * @see {@link darkColors} for the dark counterpart (same keys).
- */
-export const lightColors = {
+/** Pre-wizard structural defaults (merged with {@link wizardSemanticLight}). */
+const lightColorsBase = {
   palette,
   transparent: palette.transparent,
 
@@ -117,11 +107,8 @@ export const lightColors = {
   overlay: palette.overlay20,
 } as const;
 
-/**
- * Semantic tokens for **dark** mode: dark surfaces, light text, muted borders.
- * @see {@link lightColors} — identical property names for easy swapping in `ThemeProvider`.
- */
-export const darkColors = {
+/** Pre-wizard structural defaults (merged with {@link wizardSemanticDark}). */
+const darkColorsBase = {
   palette,
   transparent: palette.transparent,
 
@@ -151,22 +138,60 @@ export const darkColors = {
 } as const;
 
 /**
- * Fixed **light** semantic map — alias of {@link lightColors}.
- * Use for legacy code or non-theme contexts; prefer **`useTheme().colors`** in UI.
+ * Applies wizard semantic tokens on top of the static light or dark base.
  */
-export const colors = lightColors;
+export function mergeSemanticTokens<
+  B extends typeof lightColorsBase | typeof darkColorsBase,
+>(base: B, tokens: ThemeTokenSet): B & ThemeTokenSet {
+  return {
+    ...base,
+    background: tokens.background,
+    backgroundSecondary: tokens.muted,
+    surface: tokens.card,
+    text: tokens.foreground,
+    textSecondary: tokens.mutedForeground,
+    textDim: tokens.mutedForeground,
+    border: tokens.border,
+    separator: tokens.border,
+    primary: tokens.primary,
+    primaryText: tokens.primaryForeground,
+    tint: tokens.ring,
+    error: tokens.destructive,
+    errorBackground: tokens.muted,
+    foreground: tokens.foreground,
+    card: tokens.card,
+    cardForeground: tokens.cardForeground,
+    popover: tokens.popover,
+    popoverForeground: tokens.popoverForeground,
+    secondary: tokens.secondary,
+    secondaryForeground: tokens.secondaryForeground,
+    muted: tokens.muted,
+    mutedForeground: tokens.mutedForeground,
+    accent: tokens.accent,
+    accentForeground: tokens.accentForeground,
+    destructive: tokens.destructive,
+    destructiveForeground: tokens.destructiveForeground,
+    input: tokens.input,
+    ring: tokens.ring,
+  } as unknown as B & ThemeTokenSet;
+}
 
-/**
- * Union of {@link lightColors} and {@link darkColors} — the shape of **`useTheme().colors`** at runtime.
- * Wizard tokens add the same keys as {@link ThemeTokenSet} (ring, surfaces, etc.) for tweakcn-style access.
- */
+export const lightColors = mergeSemanticTokens(
+  lightColorsBase,
+  wizardSemanticLight,
+);
+
+export const darkColors = mergeSemanticTokens(
+  darkColorsBase,
+  wizardSemanticDark,
+);
+
 export type AppColors = (typeof lightColors | typeof darkColors) &
   Partial<ThemeTokenSet>;
 
-/**
- * Semantic roles aligned with the RN Init wizard (primary, secondary, muted, accent, destructive).
- * Used by {@link toneFgBg}, buttons, badges, and chips.
- */
+/** Fixed **light** semantic map — alias of {@link lightColors}. */
+export const colors = lightColors;
+
 export type SemanticTone =
   | "primary"
   | "secondary"
@@ -174,7 +199,7 @@ export type SemanticTone =
   | "accent"
   | "destructive";
 
-/** Background + on-color text for a semantic tone (works with or without full wizard env). */
+/** Background + on-color text for a semantic tone. */
 export function toneFgBg(
   colors: AppColors,
   tone: SemanticTone,
@@ -215,44 +240,4 @@ export function toneFgBg(
         foreground: destructiveFg,
       };
   }
-}
-
-/**
- * Applies wizard / tweakcn-style semantic tokens on top of the static light or dark base.
- */
-export function mergeSemanticTokens(
-  base: typeof lightColors | typeof darkColors,
-  tokens: ThemeTokenSet,
-): AppColors {
-  return {
-    ...base,
-    background: tokens.background,
-    backgroundSecondary: tokens.muted,
-    surface: tokens.card,
-    text: tokens.foreground,
-    textSecondary: tokens.mutedForeground,
-    textDim: tokens.mutedForeground,
-    border: tokens.border,
-    separator: tokens.border,
-    primary: tokens.primary,
-    primaryText: tokens.primaryForeground,
-    tint: tokens.ring,
-    error: tokens.destructive,
-    errorBackground: tokens.muted,
-    foreground: tokens.foreground,
-    card: tokens.card,
-    cardForeground: tokens.cardForeground,
-    popover: tokens.popover,
-    popoverForeground: tokens.popoverForeground,
-    secondary: tokens.secondary,
-    secondaryForeground: tokens.secondaryForeground,
-    muted: tokens.muted,
-    mutedForeground: tokens.mutedForeground,
-    accent: tokens.accent,
-    accentForeground: tokens.accentForeground,
-    destructive: tokens.destructive,
-    destructiveForeground: tokens.destructiveForeground,
-    input: tokens.input,
-    ring: tokens.ring,
-  } as AppColors;
 }

@@ -1,5 +1,5 @@
 /**
- * Semantic theme tokens (hex / rgba) — wizard + `.env` + Expo template.
+ * Semantic theme tokens (hex / rgba) — wizard + ZIP `wizardSemanticTokens.generated.ts`.
  * Keep keys in sync with `my-react-native-expo-template/config/themeFromEnv.ts`.
  */
 export const THEME_TOKEN_KEYS = [
@@ -57,20 +57,6 @@ export const THEME_TOKEN_GROUPS: { id: string; label: string; keys: ThemeTokenKe
     },
     { id: "border", label: "Border & input", keys: ["border", "input", "ring"] },
   ];
-
-/** `cardForeground` → `CARD_FOREGROUND` for EXPO_PUBLIC_THEME_LIGHT_* */
-export function themeKeyToEnvSuffix(key: ThemeTokenKey): string {
-  return key
-    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
-    .replace(/([A-Z])([A-Z][a-z])/g, "$1_$2")
-    .toUpperCase();
-}
-
-export function buildThemeEnvPrefix(mode: "light" | "dark"): string {
-  return mode === "light"
-    ? "EXPO_PUBLIC_THEME_LIGHT_"
-    : "EXPO_PUBLIC_THEME_DARK_";
-}
 
 export function defaultLightTokens(primary: string): ThemeTokenSet {
   const p = primary.trim() || "#3B82F6";

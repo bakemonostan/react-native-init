@@ -229,13 +229,11 @@ export function StylingStep({ config, onChange }: Props) {
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">Styling &amp; theme</h2>
         <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-          Tokens ship in <span className="font-mono text-xs">.env</span> as{" "}
-          <span className="font-mono text-xs">EXPO_PUBLIC_THEME_LIGHT_*</span> /{" "}
-          <span className="font-mono text-xs">DARK_*</span>. The Expo app merges them in{" "}
-          <span className="font-mono text-xs">ThemeContext</span> (hex or{" "}
-          <span className="font-mono text-xs">rgba()</span>).{" "}
-          <span className="font-mono text-xs">EXPO_PUBLIC_BRAND_PRIMARY</span> is only a fallback if
-          those vars are incomplete.
+          When you export a ZIP, RN Init writes{" "}
+          <span className="font-mono text-xs">constants/wizardSemanticTokens.generated.ts</span>{" "}
+          and <span className="font-mono text-xs">constants/Colors.ts</span> merges those tokens
+          over the base palette (hex or <span className="font-mono text-xs">rgba()</span>). Re-export
+          from the wizard to refresh theme after edits.
         </p>
       </div>
 

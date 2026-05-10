@@ -1,9 +1,4 @@
 import type { ScaffoldConfig } from "@/features/wizard/types";
-import {
-  THEME_TOKEN_KEYS,
-  buildThemeEnvPrefix,
-  themeKeyToEnvSuffix,
-} from "@/lib/themeTokens";
 
 /**
  * Maps wizard answers → `.env` lines for `my-react-native-expo-template`
@@ -30,11 +25,7 @@ export function buildEnvFromWizardConfig(config: ScaffoldConfig): string {
     `ANDROID_PACKAGE=${escapeEnv(config.bundleId)}`,
     "",
     `THEME_MODE=${themeMode}`,
-    "# Semantic accent — still applied when theme tokens omit primary (legacy).",
-    `EXPO_PUBLIC_BRAND_PRIMARY=${escapeEnv(config.primaryColor)}`,
-    "",
-    "# Full semantic theme (light + dark, hex or rgba). Template: ThemeProvider merges these over defaults.",
-    ...buildThemeEnvLines(config),
+    "# Semantic theme: constants/wizardSemanticTokens.generated.ts (ZIP overwrites from wizard).",
     "",
     "# State + HTTP client (read in Expo app: config/featureFlags.ts → runtimeModes)",
     `EXPO_PUBLIC_STATE_MODE=${config.stateManagement}`,
@@ -55,7 +46,7 @@ export function buildEnvFromWizardConfig(config: ScaffoldConfig): string {
     "",
     "# Optional template modules (Expo: app.config extra → config/featureFlags.ts)",
     `EXPO_PUBLIC_ENABLE_TOAST=${config.useToast ? "1" : "0"}`,
-    `EXPO_PUBLIC_ENABLE_I18N=${config.useI18n ? "1" : "0"}`,
+    ...(config.useI18n ? [`EXPO_PUBLIC_ENABLE_I18N=1`] : []),
     "# When 0, EXPO_PUBLIC_STATE_MODE + EXPO_PUBLIC_HTTP_CLIENT are ignored (zustand + axios+rq).",
     `EXPO_PUBLIC_ENABLE_FEATURE_FLAGS=${config.useFeatureFlags ? "1" : "0"}`,
     `EXPO_PUBLIC_ENABLE_DEBOUNCE=${config.useDebounce ? "1" : "0"}`,
@@ -97,18 +88,6 @@ export function previewBasicsAndNavigationEnv(config: ScaffoldConfig): string {
     `THEME_MODE=${themeMode}`,
     `# WIZARD_NAV=${config.navigation}  # product direction after clone`,
   ].join("\n");
-}
-
-function buildThemeEnvLines(config: ScaffoldConfig): string[] {
-  const out: string[] = [];
-  for (const mode of ["light", "dark"] as const) {
-    const prefix = buildThemeEnvPrefix(mode);
-    const set = config.themeTokens[mode];
-    for (const key of THEME_TOKEN_KEYS) {
-      out.push(`${prefix}${themeKeyToEnvSuffix(key)}=${escapeEnv(set[key])}`);
-    }
-  }
-  return out;
 }
 
 function escapeEnv(value: string): string {
