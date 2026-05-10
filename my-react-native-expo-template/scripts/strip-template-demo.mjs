@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Removes demo-only UI: Components gallery, tab routes, example screens.
+ * Removes demo-only UI: Components gallery, `components/BottomSheetComponents`
+ * (all wrapper demos), tab routes, example screens.
  * Leaves root Stack layout + authenticated `app/(app)/home.tsx` (title from APP_DISPLAY_NAME via app.config).
  *
  * Usage (from template root): npm run strip-demo
@@ -44,13 +45,9 @@ export default function HomeScreen() {
 
 const DIRS_TO_REMOVE = [
   "components/Examples",
+  "components/BottomSheetComponents",
   "app/(app)/(tabs)",
   "app/(tabs)",
-];
-
-const FILES_TO_REMOVE = [
-  "components/BottomSheetComponents/HorizontalBottomSheet.tsx",
-  "components/BottomSheetComponents/TipsBottomSheetWrapper.tsx",
 ];
 
 const FILES_PATCH_REDIRECT = [
@@ -70,19 +67,8 @@ async function rmSilent(rel) {
   }
 }
 
-async function unlinkSilent(rel) {
-  const p = path.join(root, rel);
-  try {
-    await fs.unlink(p);
-    console.log("removed:", rel);
-  } catch (e) {
-    console.warn("skip:", rel, e.message);
-  }
-}
-
 async function main() {
   for (const d of DIRS_TO_REMOVE) await rmSilent(d);
-  for (const f of FILES_TO_REMOVE) await unlinkSilent(f);
 
   const homePath = path.join(root, "app/(app)/home.tsx");
   await fs.writeFile(homePath, HOME_SCREEN, "utf8");

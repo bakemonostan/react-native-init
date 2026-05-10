@@ -12,7 +12,7 @@ import {
 import { buildEnvFromWizardConfig } from "@/lib/buildEnvSnippet";
 import { cn } from "@/lib/utils";
 import { ScaffoldConfig, StepId } from "../../types";
-import { ChevronDown, ClipboardCopy, Download, Loader2 } from "lucide-react";
+import { ChevronDown, ClipboardCopy, Download, Lightbulb, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
@@ -110,28 +110,53 @@ export function GenerateStep({ config, onEditStep }: Props) {
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">Generate</h2>
         <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-          <strong className="text-foreground">Download ZIP</strong> is the <strong className="text-foreground">full</strong>{" "}
-          template tree plus a generated <code className="rounded bg-muted px-1 font-mono text-xs">.env</code> and{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">RN_INIT_README.txt</code> — your toggles live in{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">.env</code>, not as removed files. The server needs the
-          template on disk or via URL — see <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_PATH</code>{" "}
-          / <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_ARCHIVE_URL</code>
-          {" "}(and <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_SUBPATH</code> if the Expo app is a folder inside a monorepo zip) in the Next app{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">.env.example</code>. In dev, a sibling{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">../../my-react-native-expo-template</code> is used
-          automatically when present. <strong className="text-foreground">Copy .env</strong> still works without that.
+          <strong className="text-foreground">ZIP</strong> = full template +{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">.env</code> +{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">RN_INIT_README.txt</code>. Server needs the Expo template
+          via <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_PATH</code> or{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_ARCHIVE_URL</code> (optional{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">EXPO_TEMPLATE_SUBPATH</code>; details in Next{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">.env.example</code>). Dev auto-detects a sibling{" "}
+          <code className="rounded bg-muted px-1 font-mono text-xs">my-react-native-expo-template</code>.{" "}
+          <strong className="text-foreground">Copy .env</strong> works without ZIP.
         </p>
-        <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-          After the ZIP is on your machine, you can <strong className="text-foreground">delete any folders or files</strong> you
-          don&apos;t need — nothing in the bundle is mandatory beyond what your app uses. For a quick minimal shell, unzip,
-          run <code className="rounded bg-muted px-1 font-mono text-xs">npm install</code>, then from the Expo project root run{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">npm run strip-demo</code>: that removes the Components
-          gallery, demo tabs, and example screens, and leaves the root layout plus a single{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">app/(app)/home.tsx</code> whose title follows{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">APP_DISPLAY_NAME</code> from your{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs">.env</code> (same value you set as the app name in the
-          wizard).
-        </p>
+        <div
+          className={cn(
+            "flex max-w-prose gap-3 rounded-xl border p-4 shadow-sm",
+            "border-sky-500/30 bg-sky-500/6 dark:border-sky-400/25 dark:bg-sky-400/8",
+          )}
+          role="note"
+          aria-label="Thin starter tip"
+        >
+          <Lightbulb
+            className="mt-0.5 h-5 w-5 shrink-0 text-sky-600 dark:text-sky-400"
+            aria-hidden
+          />
+          <div className="min-w-0 space-y-2">
+            <p className="text-sm font-semibold leading-snug text-foreground">
+              Want a thinner starter?
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              Remove folders you don&apos;t need anytime. After{" "}
+              <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
+                npm install
+              </code>
+              , run{" "}
+              <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
+                npm run strip-demo
+              </code>
+              — it drops demo tabs, Examples, and BottomSheetComponents; keeps the root layout and{" "}
+              <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
+                app/(app)/home.tsx
+              </code>{" "}
+              (title from{" "}
+              <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
+                APP_DISPLAY_NAME
+              </code>
+              ).
+            </p>
+          </div>
+        </div>
       </div>
 
       <div>

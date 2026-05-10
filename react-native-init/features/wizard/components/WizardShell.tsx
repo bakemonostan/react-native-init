@@ -3,6 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import {
@@ -56,7 +63,9 @@ function WizardBrand({ className }: { className?: string }) {
         <p className="truncate text-sm font-semibold text-foreground group-hover:text-foreground">
           {SITE_NAME}
         </p>
-        <p className="hidden truncate text-[11px] text-muted-foreground sm:block">Expo stack wizard</p>
+        <p className="hidden truncate text-[11px] text-muted-foreground sm:block">
+          Expo stack wizard
+        </p>
       </div>
     </Link>
   );
@@ -79,6 +88,7 @@ export function WizardShell() {
   const [basicsFieldErrors, setBasicsFieldErrors] = useState<
     Partial<Record<BasicsField, string>>
   >({});
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
 
   const patchConfig = useCallback(
     (patch: Partial<ScaffoldConfig>) => {
@@ -115,22 +125,23 @@ export function WizardShell() {
     nextStep();
   };
 
-  const handleReset = useCallback(() => {
+  const confirmReset = useCallback(() => {
     reset();
     setBasicsFieldErrors({});
+    setResetDialogOpen(false);
     toast.success("Wizard reset", {
       description: "All choices cleared.",
     });
   }, [reset]);
 
   return (
-    <div className="flex min-h-screen flex-1 bg-zinc-50 bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(14,165,233,0.07),transparent_58%)] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(56,189,248,0.09),transparent_58%)]">
-      <nav className="hidden min-h-0 w-72 shrink-0 flex-col border-r border-border/40 bg-white p-5 shadow-[2px_0_24px_-12px_rgba(15,23,42,0.06)] md:flex xl:w-80 xl:p-6 dark:bg-card/80 dark:shadow-none">
-        <div className="mb-6">
+    <div className="flex h-[100dvh] max-h-[100dvh] min-h-0 w-full overflow-hidden bg-zinc-50 bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(14,165,233,0.07),transparent_58%)] dark:bg-zinc-950 dark:bg-[radial-gradient(ellipse_120%_90%_at_50%_-8%,rgba(56,189,248,0.09),transparent_58%)]">
+      <nav className="hidden min-h-0 w-72 shrink-0 flex-col overflow-hidden border-r border-border/40 bg-white p-5 shadow-[2px_0_24px_-12px_rgba(15,23,42,0.06)] md:flex xl:w-80 xl:p-6 dark:bg-card/80 dark:shadow-none">
+        <div className="mb-6 shrink-0">
           <WizardBrand />
         </div>
 
-        <div className="flex flex-1 flex-col gap-1">
+        <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
           {STEP_ORDER.map((step, i) => {
             const isDone = i < currentIndex;
             const isActive = step === currentStep;
@@ -173,13 +184,13 @@ export function WizardShell() {
           })}
         </div>
 
-        <div className="mt-6 space-y-3 border-t border-border/60 pt-5">
+        <div className="mt-6 shrink-0 space-y-3 border-t border-border/60 pt-5">
           <Button
             type="button"
             variant="outline"
             size="sm"
             className="w-full justify-center gap-2 border-border/80 font-medium"
-            onClick={handleReset}
+            onClick={() => setResetDialogOpen(true)}
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden />
             Reset
@@ -196,8 +207,8 @@ export function WizardShell() {
         </div>
       </nav>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-border/40 bg-white/95 px-4 py-2.5 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b border-border/40 bg-white/95 px-4 py-2.5 backdrop-blur-md sm:px-6 md:hidden dark:bg-card/95">
           <WizardBrand className="min-w-0 max-w-[58%]" />
           <div className="min-w-0 shrink-0 text-right">
             <p className="truncate text-xs font-semibold text-foreground">
@@ -209,7 +220,7 @@ export function WizardShell() {
           </div>
         </div>
 
-        <header className="hidden border-b border-border/40 bg-white/95 px-4 py-3.5 backdrop-blur-md md:block md:px-8 dark:bg-card/90">
+        <header className="hidden shrink-0 border-b border-border/40 bg-white/95 px-4 py-3.5 backdrop-blur-md md:block md:px-8 dark:bg-card/90">
           <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3">
             <WizardBrand className="justify-self-start min-w-0" />
             <p className="justify-self-center text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -222,24 +233,26 @@ export function WizardShell() {
           </div>
         </header>
 
-        <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 p-4 sm:gap-8 sm:p-6 lg:flex-row lg:gap-8 lg:p-8 lg:pb-10">
-          <div className="min-w-0 flex-1">
-            <div className="rounded-xl border border-border/45 bg-white p-5 shadow-[0_16px_48px_-20px_rgba(15,23,42,0.1)] ring-1 ring-black/[0.03] sm:p-8 dark:bg-card dark:ring-white/[0.06]">
-              <StepContent
-                step={currentStep}
-                config={config}
-                onChange={patchConfig}
-                onEditStep={setStep}
-                basicsFieldErrors={
-                  currentStep === "basics" ? basicsFieldErrors : undefined
-                }
-              />
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 sm:gap-8 sm:p-6 lg:flex-row lg:gap-8 lg:p-8 lg:pb-10">
+            <div className="min-w-0 flex-1">
+              <div className="rounded-xl border border-border/45 bg-white p-5 shadow-[0_16px_48px_-20px_rgba(15,23,42,0.1)] ring-1 ring-black/[0.03] sm:p-8 dark:bg-card dark:ring-white/[0.06]">
+                <StepContent
+                  step={currentStep}
+                  config={config}
+                  onChange={patchConfig}
+                  onEditStep={setStep}
+                  basicsFieldErrors={
+                    currentStep === "basics" ? basicsFieldErrors : undefined
+                  }
+                />
+              </div>
             </div>
+            <SummaryPanel config={config} />
           </div>
-          <SummaryPanel config={config} />
         </div>
 
-        <footer className="mt-auto border-t border-border/45 bg-white/95 backdrop-blur-md dark:bg-card/95">
+        <footer className="shrink-0 border-t border-border/45 bg-white/95 backdrop-blur-md dark:bg-card/95">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
             <Button
               variant="ghost"
@@ -262,6 +275,27 @@ export function WizardShell() {
           </div>
         </footer>
       </div>
+
+      <Dialog open={resetDialogOpen} onOpenChange={setResetDialogOpen}>
+        <DialogContent showCloseButton={false} className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Reset wizard?</DialogTitle>
+            <DialogDescription>
+              This clears every answer and returns you to the first step. You can&apos;t undo
+              this.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
+            <Button type="button" variant="outline" onClick={() => setResetDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="button" variant="destructive" className="gap-2" onClick={confirmReset}>
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden />
+              Reset
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
