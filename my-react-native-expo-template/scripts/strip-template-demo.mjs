@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
- * Removes demo-only UI: Components gallery, `components/BottomSheetComponents`
- * (all wrapper demos), tab routes, example screens.
+ * Removes demo-only UI: Components gallery, tab routes, example screens,
+ * `components/BottomSheetScreens` (demo modal route shell).
+ * Keeps `components/BottomSheetComponents` (reusable BottomSheetModal wrappers).
+ * Removes `app/Modal.tsx` and unregisters the Modal stack screen in `app/_layout.tsx`.
  * Leaves root Stack layout + authenticated `app/(app)/home.tsx` (title from APP_DISPLAY_NAME via app.config).
  *
  * Usage (from template root): npm run strip-demo
@@ -45,10 +47,35 @@ export default function HomeScreen() {
 
 const DIRS_TO_REMOVE = [
   "components/Examples",
-  "components/BottomSheetComponents",
+  "components/BottomSheetScreens",
   "app/(app)/(tabs)",
   "app/(tabs)",
 ];
+
+/** Demo route that imported BottomSheetScreens — removed with that folder. */
+const FILES_TO_REMOVE = ["app/Modal.tsx"];
+
+const MODAL_STACK_SCREEN_SNIPPET = `
+            <Stack.Screen
+              name="Modal"
+              options={{
+                title: "Modal",
+                ...Platform.select({
+                  ios: {
+                    presentation: "formSheet" as const,
+                    sheetCornerRadius: 20,
+                    sheetElevation: 34,
+                    sheetExpandsWhenScrolledToEdge: true,
+                    sheetGrabberVisible: true,
+                    sheetAllowedDetents: [0.5] as [number],
+                    gestureEnabled: false,
+                  },
+                  default: {
+                    presentation: "modal" as const,
+                  },
+                }),
+              }}
+            />`;
 
 const FILES_PATCH_REDIRECT = [
   "app/index.tsx",
@@ -67,8 +94,29 @@ async function rmSilent(rel) {
   }
 }
 
+async function patchRootLayoutRemoveModalRoute() {
+  const rel = "app/_layout.tsx";
+  const p = path.join(root, rel);
+  let txt = await fs.readFile(p, "utf8");
+  if (!txt.includes('name="Modal"')) {
+    console.log("layout: Modal stack screen already removed");
+    return;
+  }
+  if (!txt.includes(MODAL_STACK_SCREEN_SNIPPET)) {
+    console.warn(
+      "layout: Modal <Stack.Screen> block changed — edit app/_layout.tsx manually to remove the Modal route",
+    );
+    return;
+  }
+  txt = txt.replace(MODAL_STACK_SCREEN_SNIPPET, "");
+  await fs.writeFile(p, txt, "utf8");
+  console.log("patched:", rel, "(removed Modal stack screen)");
+}
+
 async function main() {
   for (const d of DIRS_TO_REMOVE) await rmSilent(d);
+  for (const f of FILES_TO_REMOVE) await rmSilent(f);
+  await patchRootLayoutRemoveModalRoute();
 
   const homePath = path.join(root, "app/(app)/home.tsx");
   await fs.writeFile(homePath, HOME_SCREEN, "utf8");

@@ -145,7 +145,11 @@ export function GenerateStep({ config, onEditStep }: Props) {
               <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
                 npm run strip-demo
               </code>
-              — it drops demo tabs, Examples, and BottomSheetComponents; keeps the root layout and{" "}
+              — it drops demo tabs, Examples, BottomSheetScreens, and the Modal demo route; keeps{" "}
+              <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
+                components/BottomSheetComponents
+              </code>
+              , the root layout, and{" "}
               <code className="rounded-md border border-border/60 bg-background/80 px-1.5 py-0.5 font-mono text-[0.8125rem] text-foreground">
                 app/(app)/home.tsx
               </code>{" "}
