@@ -19,7 +19,7 @@ export function SummaryPanel({ config }: Props) {
 
   return (
     <aside className="hidden min-w-0 shrink-0 lg:block lg:w-64 xl:w-72">
-      <div className="sticky top-6 space-y-5 rounded-2xl border border-border/50 bg-white/70 p-5 shadow-[0_16px_40px_-24px_rgba(15,23,42,0.1)] backdrop-blur-sm">
+      <div className="sticky top-6 space-y-5 rounded-xl border border-border/45 bg-white/85 p-5 shadow-[0_14px_40px_-18px_rgba(15,23,42,0.09)] ring-1 ring-black/[0.03] backdrop-blur-sm dark:bg-card/80 dark:ring-white/[0.06]">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Summary
