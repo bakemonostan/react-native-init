@@ -2,6 +2,7 @@ import type { ScaffoldConfig } from "@/features/wizard/types";
 import { buildEnvFromWizardConfig } from "@/lib/buildEnvSnippet";
 import { buildWizardSemanticTokensSource } from "@/lib/generator/buildWizardSemanticTokensSource";
 import { stripI18nFromZip } from "@/lib/generator/stripI18nFromZip";
+import { stripMaintainerArtifactsFromZip } from "@/lib/generator/stripMaintainerArtifactsFromZip";
 import { buildZipReadme } from "@/lib/generator/zipReadme";
 import fs from "fs/promises";
 import JSZip from "jszip";
@@ -238,6 +239,8 @@ export async function generateProjectZip(
   if (!config.useI18n) {
     await stripI18nFromZip(zip);
   }
+
+  stripMaintainerArtifactsFromZip(zip);
 
   return zip.generateAsync({
     type: "nodebuffer",

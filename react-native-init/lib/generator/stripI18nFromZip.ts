@@ -1,11 +1,14 @@
 import type JSZip from "jszip";
 
-const REMOVED_PATHS = [
-  "context/I18nContext.tsx",
-  "i18n/index.ts",
-  "i18n/locales/en.ts",
-  "i18n/locales/es.ts",
-];
+const REMOVED_PATHS = ["context/I18nContext.tsx"];
+
+function removeI18nTree(zip: JSZip): void {
+  for (const name of Object.keys(zip.files)) {
+    const node = zip.files[name];
+    if (!node || node.dir) continue;
+    if (name.startsWith("i18n/")) zip.remove(name);
+  }
+}
 
 const LAYOUT_STRIPPED = `import { AuthPersistBridge } from "@/components/AuthPersistBridge";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -670,6 +673,7 @@ export async function stripI18nFromZip(zip: JSZip): Promise<void> {
   for (const p of REMOVED_PATHS) {
     if (zip.file(p)) zip.remove(p);
   }
+  removeI18nTree(zip);
 
   zip.file("app/_layout.tsx", LAYOUT_STRIPPED);
 
